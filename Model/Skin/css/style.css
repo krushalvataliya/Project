@@ -1,0 +1,96 @@
+body {
+	display: block;
+	margin: 0px;justify-content: center;
+}
+
+.flx{
+  display: flex;
+}
+
+.navbar{
+	display: flex;
+	height: 45px;
+	background: #04AA6D;
+}
+
+.navitem{
+	text-decoration: none;
+	font-size: 20px;
+	margin:20px;
+	color: #ffffff	
+}
+
+.navdiv{
+	margin-top: 12px;
+}
+
+#product {
+  font-family: Arial, Helvetica, sans-serif;
+  border-collapse: collapse;
+  width: 25px;
+  margin-left: 155px;
+}
+
+#product td, #product th {
+  border: 1px solid #ddd;
+  padding: 8px;
+}
+
+#product tr:nth-child(odd){background-color: #f2f2f2;}
+
+#product tr:hover {background-color: #ddd;}
+
+#product th {
+  padding-top: 12px;
+  padding-bottom: 12px;
+  text-align: left;
+  background-color: #04AA6D;
+  color: white;
+}
+
+.button {
+  border: none;
+  color: white;
+  padding: 15px 32px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  margin: 4px 2px;
+  cursor: pointer;
+  background-color:#04aa6d;
+} 
+
+.add{
+  text-decoration: none;
+  color: white;
+}
+
+.formbutton{
+  height: 48px;
+width: 100px;
+background-color:#04aa6d;
+text-align: center;
+text-decoration-color: white;
+margin-top: 4px; 
+}
+
+#formbutton1{  
+  height: 48px;
+width: 100px;
+background-color:#04aa6d;
+text-align: center;
+text-decoration-color: white;
+margin-top: 4px; 
+}
+.spbtn{
+ height: 48px;
+width: 100px;
+
+}
+
+
+#deletebtn{
+      margin-left: 52px;
+
+}
