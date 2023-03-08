@@ -1,0 +1,48 @@
+<?php
+$request = $this->getRequest();
+$productId=$request->getParam('product_id');
+$sql ="SELECT * FROM `image` WHERE `product_id`= $productId ;";
+$adapter =$this->getAdapter();
+$results =$adapter->fetchAll($sql);
+?>
+<!DOCTYPE html>
+<html>
+  <head>
+    <link rel="stylesheet" href="Model/Skin/css/style.css">
+    <title></title>
+  </head>
+  <body>
+    <div class="flx"><div><h1>image</h1></div><div style="margin-left: 635px;margin-top: 15px;"><button class="button " > <a  class="add" href="http://localhost/new_project/index.php?a=add&c=product_media&product_id=<?php echo $productId; ?>">add image</a></button></div></div>
+    <table id="product">
+      <tr>
+        <th> image</th>
+        <th> name</th>
+        <th> thumbnail</th>
+        <th> midium</th>
+        <th> large</th>
+        <th> small</th>
+        <th> gallary</th>
+        <th> created_at </th>
+        <th> delete</th>
+      </tr>
+      
+      <form action="http://localhost/new_project/index.php?a=update&c=product_media&product_id=<?php echo $productId ?>" method="POST">
+        <input id="formbutton1" class="formbutton" type="submit" name="button" value="update">
+        <input id="formbutton1 deletebtn" class="formbutton "  type="submit" name="button" value="delete">
+        <?php foreach ($results as $result): ?>
+        <tr>
+          <td><img class="demoimg" src="View/product_media/media/<?php echo $result['img'] ?>"></td>
+          <td><?php echo $result['filename'] ?></td>
+          <td><input type="radio" value="<?php echo $result['img_id'] ?>" name="thumbnail" <?php if ($result['thumbnail']){echo "checked";}?>></td>
+          <td><input type="radio" value="<?php echo $result['img_id'] ?>" name="midium"<?php if ($result['midium']){echo "checked";}?>></td>
+          <td><input type="radio" value="<?php echo $result['img_id'] ?>" name="large" <?php if ($result['large']){echo "checked";}?>></td>
+          <td><input type="radio" value="<?php echo $result['img_id'] ?>" name="small" <?php if ($result['small']){echo "checked";}?>></td>
+          <td><input type="checkbox" value="<?php echo $result['img_id'] ?>" name="gallary[]" <?php if ($result['gallary']){echo "checked";}?>></td>
+          <td><?php echo $result['created_at'] ?></td>
+          <td><input type="checkbox" value="<?php echo $result['img_id'] ?>" name="delete_image[]" ></td>
+        </tr>
+        <?php endforeach; ?>
+      </table>
+    </form>
+  </body>
+</html>

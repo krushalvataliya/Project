@@ -1,0 +1,94 @@
+<?php 
+$request = $this->getRequest();
+$id=$request->getParam('vendor_id');
+if(!isset($id))
+{
+  throw new Exception("invalid product id.", 1);
+}
+ $sql ="SELECT * 
+        FROM `vendors` 
+        WHERE `vendor_id`= '$id';";
+$adapter =$this->getAdapter();
+$vendor =$adapter->fetchRow($sql);
+
+  $status = $vendor['status'];
+  $gender = $vendor['gender'];
+
+    // echo $customer['product_id'];
+ ?>
+<!DOCTYPE html>
+<html>
+<head>
+   	<link rel="stylesheet" href="Model/Skin/css/style.css">
+	<title>vendor</title>
+</head>
+<style type="text/css">
+  .formbutton{
+  height: 48px;
+width: 100px;
+background-color:#04aa6d;
+text-align: center;
+text-decoration-color: white;
+
+margin-top: 4px; 
+}
+</style>
+<?php require_once "View/html/header.phtml" ?>
+<body>
+<div class="flx"><div><h1> edit vendor</h1></div><div><button class="button  "style=" margin-left: 274px;"><a  class="add" href="http://localhost/new_project/Vendor.php?a=grid">
+        Cancel
+    </a></button></div> <div class=""><form action="http://localhost/new_project/index.php?a=update&c=vendor" method="POST"><input id="formbutton1" class="formbutton" type="submit" value="Save"></td></div></div>
+
+<table id="product">
+
+<tr>
+<th> vendor id</th>
+<td><input type="text" id="first_name" name="vendor[vendor_id]" value="<?php echo $vendor['vendor_id']?>"></td>
+</tr>
+
+<tr>
+<th> first_name</th>
+<td><input type="text" id="first_name" name="vendor[first_name]" value="<?php echo $vendor['first_name']?>"></td>
+</tr>
+<tr>
+<th> last_name</th>
+<td><input type="text" id="last_name" name="vendor[last_name]" value="<?php echo $vendor['last_name']?>"></td>
+</tr>
+<tr>
+<th> email</th>
+<td><input type="email" id="email" name="vendor[email]" value="<?php echo $vendor['email']?>"></td>
+</tr>
+<tr>
+<th> gender</th>
+<td> <select name="vendor[gender]" id="gender" >
+  <option value="male"name="male">male</option>
+  <option value="female"name="female">female</option>
+ 
+</select> </td>
+</tr>
+<tr>
+<th> mobile</th>
+<td><input type="mobile" id="mobile" name="vendor[mobile]" value="<?php echo $vendor['mobile']?>"></td>
+</tr>
+<tr>
+<th> status</th>
+<td> <select name="vendor[status]" id="status" >
+  <option value="avilable"name="avilable">avilable</option>
+  <option value="unavailable"name="unavailable">unavailable</option>
+ 
+</select> </td>
+</tr>
+
+<tr>
+<th> company</th>
+<td><input type="text" id="company" name="vendor[company]" value="<?php echo $vendor['company']?>"></td>
+</tr>
+
+
+</form>
+
+ 
+</table>
+<?php require_once "View/html/footer.phtml" ?>
+</body>
+</html>

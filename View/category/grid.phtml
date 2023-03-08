@@ -1,0 +1,58 @@
+<?php
+$sql ="SELECT * FROM `categories` ORDER BY `parent_id` ASC;";
+$adapter =$this->getAdapter();
+$categories =$adapter->fetchAll($sql);
+
+?>
+<!DOCTYPE html>
+<html>
+  <head>
+    <link rel="stylesheet" href="Model/Skin/css/style.css">
+    <title>product</title>
+  </head>
+  <body>
+    <?php require_once "View/html/header.phtml" ?>
+    <div class="flx"><div><h1>category</h1></div><div style="margin-left: 635px;margin-top: 15px;"><button class="button " > <a  class="add" href="http://localhost/new_project/index.php?a=add&c=category">
+    add category
+  </a></button></div></div>
+  <table id="product">
+    <tr >
+      
+      <th> category_id</th>
+      <th> name</th>
+      <th> status</th>
+      <th>description</th>
+      <th> </th>
+      <th> </th>
+    </tr>
+    <?php foreach ($categories as $category): ?>
+    <tr>
+      <td><?php echo $category['category_id'] ?></td>
+      <td><?php
+        if($category['parent_id'] != null){
+        $path = array("");
+        $id=$category['parent_id'];
+        while ($id != null) {
+        foreach ($categories as $main) {
+        if($id == $main['category_id'])
+        {
+        array_push($path, $main['name']);
+        $id = $main['parent_id'];
+        }
+        }
+        }
+        $path=array_reverse($path);
+        $path=implode("=>",$path);
+        echo $path;
+        }
+      echo  $category['name']; ?></td>
+      <td><?php echo $category['status'] ?></td>
+      <td><?php echo $category['description'] ?></td>
+      <td><a href="http://localhost/new_project/index.php?a=edit&c=category&category_id=<?php echo $category['category_id'] ?>">edit</a></td>
+      <td><a href="http://localhost/new_project/index.php?a=delete&c=category&category_id=<?php echo $category['category_id'] ?>">delete<a></td>
+    </tr>
+    <?php endforeach; ?>
+  </table>
+</body>
+<?php require_once "View/html/footer.phtml" ?>
+</html>

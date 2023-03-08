@@ -1,0 +1,40 @@
+<?php
+$request = $this->getRequest();
+$id=$request->getParam('customer_id');
+$sql ="SELECT * FROM `customer_address` WHERE `customer_id`= $id";
+$adapter =$this->getAdapter();
+$address =$adapter->fetchrow($sql);
+?>
+<!DOCTYPE html>
+<html>
+  <head>
+    <link rel="stylesheet" href="Model/Skin/css/style.css">
+    <title>view customer</title>
+  </head>
+  <body>
+    <?php require_once "View/html/header.phtml" ?>
+    <div class="flx"><div><h1>view customer address</h1></div></div>
+    <table id="product">
+      <tr>
+        
+        <th>address_id</th>
+        <th>address</th>
+        <th>city</th>
+        <th>state</th>
+        <th>country</th>
+        <th>zip_code</th>
+        <th> </th>
+      </tr>
+      <tr>
+        <td><?php echo $address['address_id'] ?> </td>
+        <td><?php echo $address['address'] ?></td>
+        <td><?php echo $address['city'] ?></td>
+        <td><?php echo $address['state'] ?></td>
+        <td><?php echo $address['country'] ?></td>
+        <td><?php echo $address['zip_code'] ?></td>
+        <td><a href="http://localhost/new_project/index.php?a=edit&c=customer_address&customer_id=3344&customer_id=<?php echo $address['customer_id'] ?>">edit</a></td>
+      </tr>
+    </table>
+  </body>
+  <?php require_once "View/html/footer.phtml" ?>
+</html>

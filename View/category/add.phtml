@@ -1,0 +1,58 @@
+<?php
+$sql ="SELECT * FROM `categories`WHERE 1;";
+$adapter =$this->getAdapter();
+$categories =$adapter->fetchAll($sql);
+?>
+<!DOCTYPE html>
+<html>
+  <head>
+    <link rel="stylesheet" href="Model/Skin/css/style.css">
+    <title>category</title>
+  </head>
+  
+  <body>
+    
+    <?php require_once "View/html/header.phtml" ?>
+    <div class="flx"><div><h1> add category</h1></div><div><button class="button  "style=" margin-left: 274px;"><a  class="add" href="http://localhost/new_project/Category.php?a=grid">
+    Cancel
+    </a></button></div> <div class=""><form action="http://localhost/new_project/index.php?a=insert&c=category" method="POST"><input id="formbutton1" class="formbutton" type="submit" value="Save"></td></div></div>
+    <table id="product">
+      <form action="insert_category.php" method="GET">
+        <tr>
+          <th> category_id</th>
+          <td><input type="number" id="category_id" name="category[category_id]"></td>
+        </tr>
+        <tr>
+          <tr> <th> parent category</th>
+          <td><select name="category[sub_category]"class="custom-select" >
+            <option value="0" >select</option>
+            <?php foreach ($categories as $category): ?>
+            <option value="<?php echo $category['category_id'];?>"><?php if ($category['parent_id'] != null) {
+              foreach ($categories as $main) {
+              if ($category['parent_id'] == $main['category_id']) {
+              echo $main['name'];
+              }
+              }
+              echo "=>";
+            } echo $category['name'];?></option>
+            <?php endforeach; ?>
+          </select> </td></tr>
+          <th> name</th>
+          <td><input type="text" id="name" name="category[name]"></td>
+        </tr>
+        <tr>
+          <th> status</th>
+          <td> <select name="category[status]" id="status" >
+            <option value="available"name="available">available</option>
+            <option value="unavailable"name="unavailable">unavailable</option>
+          </select> </td>
+        </tr>
+        <tr>
+          <th> description</th>
+          <td><input type="text" id="description" name="category[description]"></td>
+        </tr>
+      </form>
+    </table>
+    <?php require_once "View/html/footer.phtml" ?>
+  </body>
+</html>

@@ -1,0 +1,71 @@
+<?php 
+$request = $this->getRequest();
+$id=$request->getParam('shiping_method_id');
+if(!isset($id))
+{
+  throw new Exception("invalid product id.", 1);
+}
+$sql ="SELECT * FROM `shiping_methods` WHERE `shiping_method_id`= '$id';";
+$adapter =$this->getAdapter();
+$shiping_method =$adapter->fetchRow($sql);
+$status = $shiping_method['status'];
+?>
+<!DOCTYPE html>
+<html>
+<head>
+    <link rel="stylesheet" href="Model/Skin/css/style.css">
+	<title>shiping method</title>
+</head>
+<style type="text/css">
+  .formbutton{
+  height: 48px;
+width: 100px;
+background-color:#04aa6d;
+text-align: center;
+text-decoration-color: white;
+
+margin-top: 4px; 
+}
+</style>
+<body>
+
+<?php require_once "View/html/header.phtml" ?>
+
+<div class="flx"><div><h1> edit shiping method</h1></div><div><button class="button  "style=" margin-left: 274px;"><a  class="add" href="http://localhost/new_project/index.php?a=grid&c=shippingmethod">
+        Cancel
+    </a></button></div> <div class=""><form action="http://localhost/new_project/index.php?a=update&c=shippingmethod" method="POST"><input id="formbutton1" class="formbutton" type="submit" value="Save"></td></div></div>
+
+<table id="product">
+  
+<tr>
+<th>shipping method id</th>
+<td><input type="text" id="name" name="shiping_method[shiping_method_id]" value="<?php echo $shiping_method['shiping_method_id']?>"></td>
+</tr>
+
+<tr>
+<th>name</th>
+<td><input type="text" id="name" name="shiping_method[name]" value="<?php echo $shiping_method['name']?>"></td>
+</tr>
+
+<tr>
+<th>amount</th>
+<td><input type="number" id="amount" name="shiping_method[amount]" value="<?php echo $shiping_method['amount']?>"></td>
+</tr>
+
+<th> status</th>
+<td> <select name="shiping_method[status]" id="status" >
+  <option value="available"name="available">available</option>
+  <option value="unavailable"name="unavailable">unavailable</option>
+ 
+</select> </td>
+</tr>
+
+
+
+</form>
+
+ 
+</table>
+<?php require_once "View/html/footer.phtml" ?>
+</body>
+</html>

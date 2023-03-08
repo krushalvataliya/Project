@@ -1,0 +1,40 @@
+<?php
+$sql ="SELECT * FROM `shiping_methods` WHERE 1";
+$adapter =$this->getAdapter();
+$shipping_method =$adapter->fetchAll($sql);
+?>
+<!DOCTYPE html>
+<html>
+  <head>
+    <link rel="stylesheet" href="Model/Skin/css/style.css">
+    <title>shipping method</title>
+  </head>
+  <body>
+    <?php require_once "View/html/header.phtml" ?>
+  </div>
+  <div class="flx"><div><h1>shipping method</h1></div><div style="margin-left: 635px;margin-top: 15px;"><button class="button " > <a  class="add" href="http://localhost/new_project/index.php?a=add&c=shippingmethod">
+  add shipping method
+</a></button></div></div>
+<table id="product">
+  <tr>
+    <th> shipping_method_id</th>
+    <th> name</th>
+    <th> amount</th>
+    <th> status</th>
+    <th> </th>
+    <th> </th>
+  </tr>
+  <tr>
+    <?php foreach ($shipping_method as $shipping_method): ?>
+    <td><?php echo $shipping_method['shiping_method_id'] ?></td>
+    <td> <?php echo $shipping_method['name'] ?> </td>
+    <td> <?php echo $shipping_method['amount'] ?> </td>
+    <td> <?php echo $shipping_method['status'] ?> </td>
+    <td><a href="http://localhost/new_project/index.php?a=edit&c=shippingmethod&shiping_method_id=<?php echo $shipping_method['shiping_method_id'] ?>">edit</a></td>
+    <td><a href="http://localhost/new_project/index.php?a=delete&c=shippingmethod&shiping_method_id=<?php echo $shipping_method['shiping_method_id'] ?>">delete<a></td>
+  </tr>
+  <?php endforeach; ?>
+</table>
+</body>
+<?php require_once "View/html/footer.phtml" ?>
+</html>

@@ -1,0 +1,53 @@
+<?php
+$request = $this->getRequest();
+$id=$request->getParam('customer_id');
+if(!isset($id)){
+throw new Exception("invalid product id.", 1);
+}
+$sql ="SELECT * FROM `customer_address` WHERE `customer_id`= $id";
+$adapter =$this->getAdapter();
+$address =$adapter->fetchrow($sql);
+?>
+<!DOCTYPE html>
+<html>
+    <head>
+        <link rel="stylesheet" href="Model/Skin/css/style.css">
+        <title>customer</title>
+    </head>
+    
+    <body>
+        <?php require_once "View/html/header.phtml" ?>
+        <div class="flx"><div><h1> edit customer address</h1></div><div><button class="button  "style=" margin-left: 274px;"><a  class="add" href="http://localhost/new_project/index.php?a=grid&c=customer_address&customer_id=3344">
+        Cancel
+        </a></button></div> <div class=""> <form action="http://localhost/new_project/index.php?a=update&c=customer_address&customer_id=3344" method="POST"><input id="formbutton1" class="formbutton" type="submit" value="Save"></td></div></div>
+        <table id="product">
+            
+            <tr>
+                <th> customer id</th>
+                <td><input type="number" id="address_id" name="address[customer_id]" value="<?php echo $address['customer_id']?>"></td>
+            </tr>
+            <tr>
+                <th> address</th>
+                <td><input type="text" id="address" name="address[address]" value="<?php echo $address['address']?>"></td>
+            </tr>
+            <tr>
+                <th> city</th>
+                <td><input type="text" id="city" name="address[city]" value="<?php echo $address['city']?>"></td>
+            </tr>
+            <tr>
+                <th> state</th>
+                <td><input type="text" id="state" name="address[state]" value="<?php echo $address['state']?>"></td>
+            </tr>
+            <th> country</th>
+            <td><input type="text" id="country" name="address[country]" value="<?php echo $address['country']?>"></td>
+        </tr>
+        <tr>
+            <th> zip_code</th>
+            <td><input type="number" id="zip_code" name="address[zip_code]" value="<?php echo $address['zip_code']?>"></td>
+        </tr>
+    </form>
+    
+</table>
+<?php require_once "View/html/footer.phtml" ?>
+</body>
+</html>

@@ -1,0 +1,78 @@
+<?php
+$request = $this->getRequest();
+$id=$request->getParam('customer_id');
+if(!isset($id))
+{
+throw new Exception("invalid product id.", 1);
+}
+$sql ="SELECT * FROM `customers` WHERE `customer_id`= '$id';";
+$adapter =$this->getAdapter();
+$customer =$adapter->fetchRow($sql);
+$status = $customer['status'];
+$gender = $customer['gender'];
+?>
+<!DOCTYPE html>
+<html>
+  <head>
+    <link rel="stylesheet" href="Model/Skin/css/style.css">
+    <title>customer</title>
+  </head>
+  <style type="text/css">
+  .formbutton{
+  height: 48px;
+  width: 100px;
+  background-color:#04aa6d;
+  text-align: center;
+  text-decoration-color: white;
+  margin-top: 4px;
+  }
+  </style>
+  <body>
+    <?php require_once "View/html/header.phtml" ?>
+    <div class="flx"><div><h1> edit customer</h1></div><div><button class="button  "style=" margin-left: 274px;"><a  class="add" href="http://localhost/new_project/index.php?a=grid&c=customer">
+    Cancel
+    </a></button></div> <div class=""><form action="http://localhost/new_project/index.php?a=update&c=customer" method="POST"><input id="formbutton1" class="formbutton" type="submit" value="Save"></td></div></div>
+    <table id="product">
+      <form action="http://localhost/new_project/Customer.php?a=update" method="POST">
+        <tr>
+          <th> customer_id</th>
+          <td><input type="number" id="customer[customer_id]" name="customer[customer_id]" value="<?php echo $customer['customer_id']?>"></td>
+        </tr>
+        <tr>
+          <th> first_name</th>
+          <td><input type="text" id="first_name" name="customer[first_name]" value="<?php echo $customer['first_name']?>"></td>
+        </tr>
+        <tr>
+          <th> last_name</th>
+          <td><input type="text" id="last_name" name="customer[last_name]" value="<?php echo $customer['last_name']?>"></td>
+        </tr>
+        <tr>
+          <th> email</th>
+          <td><input type="email" id="email" name="customer[email]" value="<?php echo $customer['email']?>"></td>
+        </tr>
+        <tr>
+          <th> gender</th>
+          <td> <select name="customer[gender]" id="gender]" >
+            <option value="male"name="male">male</option>
+            <option value="female"name="female">female</option>
+            
+          </select> </td>
+        </tr>
+        <tr>
+          <th> mobile</th>
+          <td><input type="number" id="mobile" name="customer[mobile]" value="<?php echo $customer['mobile']?>"></td>
+        </tr>
+        <tr>
+          <th> status</th>
+          <td> <select name="customer[status]" id="status" >
+            <option value="1"name="Available">Available</option>
+            <option value="2  "name="unavailable">unavailable</option>
+            
+          </select> </td>
+        </tr>
+      </form>
+      
+    </table>
+    <?php require_once "View/html/header.phtml" ?>
+  </body>
+</html>

@@ -1,0 +1,34 @@
+<?php 
+$request = $this->getRequest();
+$productId=$request->getParam('product_id');
+?>
+<!DOCTYPE html>
+<html>
+<head>
+  <link rel="stylesheet" href="Model/Skin/css/style.css">
+</head>
+<body>
+
+<form action="http://localhost/new_project/index.php?a=insert&c=product_media&product_id=<?php echo $productId;?>" method="POST" enctype="multipart/form-data">
+
+	<table id= "product">
+		<tr>
+			<th>image</th>
+ 			<td> <input type="file" id="image" name="fileToUpload"></td>
+ 		</tr>
+
+ 		<tr>
+ 			<th>product_id</th>
+  			<td><input type="text" id="product_id" name="product_id" value="<?php echo $productId ?>">
+  		</td>
+  
+  		<tr>
+  			<th>image name</th>
+  			<td><input type="text" id="text" name="filename">
+  		</td>
+
+</table>
+  <input type="submit">
+</form>
+</body>
+</html>

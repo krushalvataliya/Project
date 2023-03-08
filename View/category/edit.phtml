@@ -1,0 +1,75 @@
+<?php
+$request = $this->getRequest();
+$id=$request->getParam('category_id');
+if(!isset($id))
+{
+throw new Exception("invalid product id.", 1);
+}
+$sql ="SELECT *
+FROM `categories`
+WHERE `category_id`= '$id';";
+$sql2 ="SELECT *
+FROM `categories`";
+$adapter =$this->getAdapter();
+$category =$adapter->fetchRow($sql);
+$parent =$adapter->fetchAll($sql2);
+?>
+<!DOCTYPE html>
+<html>
+  <head>
+    <link rel="stylesheet" href="Model/Skin/css/style.css">
+    <title>category</title>
+  </head>
+  
+  <body>
+    <?php require_once "View/html/header.phtml" ?>
+    <div class="flx"><div><h1> edit category</h1></div><div><button class="button  "style=" margin-left: 274px;"><a  class="add" href="http://localhost/new_project/index.php?a=grid&c=category">
+    Cancel
+    </a></button></div> <div class=""><form action="http://localhost/new_project/index.php?a=update&c=category" method="POST"><input id="formbutton1" class="formbutton" type="submit" value="Save"></td></div></div>
+    <table id="product">
+      <form action="insert_category.php" method="GET">
+        <tr>
+          <th> category_id</th>
+          <td><input type="number" id="category_id" name="category[category_id]" value="<?php echo $category['category_id'] ?>"></td>
+        </tr>
+        
+        <tr> <th> parent category</th>
+          <td><select name="category[sub_category]" >
+            <option value="0" >select</option>
+            <?php foreach ($parent as $categorya): ?>
+            <option value="<?php echo $categorya['category_id'];?>" <?php  if ($category['parent_id'] == $categorya['category_id']) { echo "selected";} ?>>
+
+
+              <?php if ($categorya['parent_id'] != null) {
+      foreach ($parent as $main) {
+         if ($categorya['parent_id'] == $main['category_id']) {
+           echo $main['name'];
+         }
+       } 
+       echo "=>";
+      } echo $categorya['name'];?></option>
+            <?php endforeach; ?>
+          </select> </td></tr>
+          
+          <tr>
+            <th> name</th>
+            <td><input type="text" id="name" name="category[name]" value="<?php echo $category['name'] ?>"></td>
+          </tr>
+          <tr>
+            <th> status</th>
+            <td> <select name="category[status]" id="status" >
+              <option value="available"name="Available">available</option>
+              <option value="unavailable"name="unavailable">unavailable</option>
+              
+            </select> </td>
+          </tr>
+          <tr>
+            <th> description</th>
+            <td><input type="text" id="description" name="category[description]" value="<?php echo $category['description'] ?>"></td>
+          </tr>
+        </form>
+        
+      </table>
+      <?php require_once "View/html/footer.phtml" ?>
+    </body>
+  </html>

@@ -1,0 +1,50 @@
+<?php
+$sql ="SELECT * FROM `vendors` WHERE 1";
+$adapter =$this->getAdapter();
+$vendors =$adapter->fetchAll($sql);
+?>
+<!DOCTYPE html>
+<html>
+  <head>
+    <link rel="stylesheet" href="Model/Skin/css/style.css">
+    <title>vendor</title>
+  </head>
+  <body>
+    <?php require_once "View/html/header.phtml" ?>
+    <div class="flx"><div><h1>vendor</h1></div><div style="margin-left: 635px;margin-top: 15px;"><button class="button " > <a  class="add" href="http://localhost/new_project/index.php?a=add&c=vendor">
+    add vendor
+  </a></button></div></div>
+  <table id="product">
+    <tr>
+      <th> vendor_id</th>
+      <th> first_name</th>
+      <th> last_name</th>
+      <th> email</th>
+      <th> gender</th>
+      <th> mobile</th>
+      <th> status</th>
+      <th> company</th>
+      <th> </th>
+      <th> </th>
+      <th> </th>
+    </tr>
+    <?php foreach ($vendors as $vendor): ?>
+    
+    <tr>
+      <td><?php echo $vendor['vendor_id'] ?></td>
+      <td><?php echo $vendor['first_name'] ?></td>
+      <td><?php echo $vendor['last_name'] ?></td>
+      <td><?php echo $vendor['email'] ?></td>
+      <td><?php echo $vendor['gender'] ?></td>
+      <td><?php echo $vendor['mobile'] ?></td>
+      <td><?php echo $vendor['status'] ?></td>
+      <td><?php echo $vendor['company'] ?></td>
+      <td><a href="http://localhost/new_project/index.php?a=edit&c=vendor&vendor_id=<?php echo $vendor['vendor_id'] ?>">edit</a></td>
+      <td><a href="http://localhost/new_project/index.php?a=delete&c=vendor&vendor_id=<?php echo $vendor['vendor_id'] ?>">delete<a></td>
+      <td><a href="http://localhost/new_project/index.php?a=grid&c=vendor_address&vendor_id=<?php echo $vendor['vendor_id'] ?>">view address<a></td>
+    </tr>
+    <?php endforeach; ?>
+  </table>
+</body>
+<?php require_once "View/html/footer.phtml" ?>
+</html>

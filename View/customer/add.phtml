@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <link rel="stylesheet" href="Model/Skin/css/style.css">
+    <title>customer</title>
+  </head>
+  
+  <body>
+    <?php require_once "View/html/header.phtml" ?>
+    <div class="flx">
+      <div><h1> add customer</h1></div><div><button class="button  "style=" margin-left: 274px;"><a  class="add" href="http://localhost/new_project/index.php?a=grid&c=customer">
+      Cancel
+      </a></button></div> <div class=""><form action="http://localhost/new_project/index.php?a=insert&c=customer" method="POST"><input id="formbutton1" class="formbutton" type="submit" value="Save"></td></div></div>
+      <table id="product">
+        <form action="insert_customer.php" method="GET">
+          <tr>
+            <th> customer_id</th>
+            <td><input type="number" name="customer[customer_id]"></td>
+          </tr>
+          <tr>
+            <th> first_name</th>
+            <td><input type="text"  name="customer[first_name]"></td>
+          </tr>
+          <tr>
+            <th> last_name</th>
+            <td><input type="text"  name="customer[last_name]"></td>
+          </tr>
+          <tr>
+            <th> email</th>
+            <td><input type="email"  name="customer[email]"></td>
+          </tr>
+          <tr>
+            <th> gender</th>
+            <td> <select name="customer[gender]" id="gender" >
+              <option value="male"name="male">male</option>
+              <option value="female"name="female">female</option>
+              
+            </select> </td>
+          </tr>
+          <tr>
+            <th> mobile</th>
+            <td><input type="number" id="mobile" name="customer[mobile]"></td>
+          </tr>
+          <tr>
+            <th> status</th>
+            <td> <select name="customer[status]" id="status" >
+              <option value="Available"name="Available">Available</option>
+              <option value="unavailable"name="unavailable">unavailable</option>
+              
+            </select> </td>
+          </tr>
+          <td >
+            <h6>add customer address</h6>
+          </td>
+          <?php require 'View/customer_address/add.phtml' ?>
+        </form>
+        
+      </table>
+      <?php require_once "View/html/footer.phtml" ?>
+    </body>
+  </html>

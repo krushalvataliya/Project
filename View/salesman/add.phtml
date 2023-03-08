@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <link rel="stylesheet" href="Model/Skin/css/style.css">
+    <title>salesman</title>
+  </head>
+  <body>
+    <?php require_once "View/html/header.phtml" ?>
+    <div class="flx"><div><h1> add salesman</h1></div><div><button class="button  "style=" margin-left: 274px;"><a  class="add" href="http://localhost/new_project/Salesman.php?a=grid">
+    Cancel
+    </a></button></div> <div class=""><form action="http://localhost/new_project/index.php?a=insert&c=salesman" method="POST"><input id="formbutton1" class="formbutton" type="submit" value="Save"></td></div></div>
+    <table id="product">
+      <tr>
+        <th> salesman_id</th>
+        <td><input type="number" id="salesman_id" name="salesman[salesman_id]"></td>
+      </tr>
+      <tr>
+        <th> first_name</th>
+        <td><input type="text" id="first_name" name="salesman[first_name]"></td>
+      </tr>
+      <tr>
+        <th> last_name</th>
+        <td><input type="text" id="last_name" name="salesman[last_name]"></td>
+      </tr>
+      <tr>
+        <th> email</th>
+        <td><input type="email" id="email" name="salesman[email]"></td>
+      </tr>
+      <tr>
+        <th> gender</th>
+        <td> <select name="salesman[gender]" id="gender" >
+          <option value="male"name="male">male</option>
+          <option value="female"name="female">female</option>
+          
+        </select> </td>
+      </tr>
+      <tr>
+        <th> mobile</th>
+        <td><input type="mobile" id="mobile" name="salesman[mobile]"></td>
+      </tr>
+      <tr>
+        <th> status</th>
+        <td>
+          <select name="salesman[status]" id="status" >
+            <option value="available"name="available">available</option>
+            <option value="unavailable"name="unavailable">unavailable</option>
+          </select>
+        </td>
+      </tr>
+      <tr>
+        <th> company</th>
+        <td><input type="text" id="company" name="salesman[company]"></td>
+      </tr>
+      <tr>
+        <td>add address</td>
+      </tr>
+      <?php require 'View/salesman_address/add.phtml' ?>
+    </form>
+  </table>
+</body>
+</html>

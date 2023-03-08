@@ -1,0 +1,71 @@
+
+<?php 
+$request = $this->getRequest();
+$id=$request->getParam('vendor_id');
+if(!isset($id))
+{
+  throw new Exception("invalid vendor_id.", 1);
+}
+
+$sql ="SELECT * FROM `vendor_address` WHERE `vendor_id`= $id";
+$adapter =$this->getAdapter();
+$address =$adapter->fetchrow($sql);
+ ?>
+<!DOCTYPE html>
+<html>
+<head>
+  <link rel="stylesheet" href="Model/Skin/css/style.css">
+	<title>vendor</title>
+</head>
+<style type="text/css">
+  .formbutton{
+  height: 48px;
+width: 100px;
+background-color:#04aa6d;
+text-align: center;
+text-decoration-color: white;
+
+margin-top: 4px; 
+}
+</style>
+
+
+
+
+<body>
+
+<?php require_once "View/html/header.phtml" ?>
+<div class="flx"><div><h1> edit vendor address</h1></div><div><button class="button  "style=" margin-left: 274px;"><a  class="add" href="vendor.php">
+        Cancel
+    </a></button></div> <div class=""><form action="http://localhost/new_project/index.php?a=update&c=vendor_address" method="POST"><input id="formbutton1" class="formbutton" type="submit" value="Save"></td></div></div>
+
+<table id="product">
+<tr>
+	<th> vendor_id</th>
+	<td><input type="number" id="vendor_id" name="address[vendor_id]" value="<?php echo $address['vendor_id']?>"></td>
+</tr>
+
+<tr>
+	<th> address</th>
+	<td><input type="text" id="address" name="address[address]" value="<?php echo $address['address']?>"></td>
+</tr>
+<tr>
+	<th> city</th>
+	<td><input type="text" id="city" name="address[city]" value="<?php echo $address['city']?>"></td>
+</tr>
+<tr>
+	<th> state</th>
+	<td><input type="text" id="state" name="address[state]" value="<?php echo $address['state']?>"></td>
+</tr>
+	<th> country</th>
+	<td><input type="text" id="country" name="address[country]" value="<?php echo $address['country']?>"></td>
+</tr>
+<tr>
+	<th> zip_code</th>
+	<td><input type="number" id="zip_code" name="address[zip_code]" value="<?php echo $address['zip_code']?>"></td>
+</tr>
+</form>
+</table>
+ <?php require_once "View/html/footer.phtml" ?>
+</body>
+</html>

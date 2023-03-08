@@ -1,0 +1,52 @@
+<?php
+$sql ="SELECT * FROM `salesmans` WHERE 1";
+$adapter =$this->getAdapter();
+$salesmans =$adapter->fetchAll($sql);
+?>
+<!DOCTYPE html>
+<html>
+  <head>
+    <link rel="stylesheet" href="Model/Skin/css/style.css">
+    <title>salesman</title>
+  </head>
+  <body>
+    <?php require_once "View/html/header.phtml" ?>
+    <div class="flx"><div><h1>salesman</h1></div><div style="margin-left: 635px;margin-top: 15px;"><button class="button " > <a  class="add" href="http://localhost/new_project/index.php?a=add&c=salesman">
+    add salesman
+  </a></button></div></div>
+  <table id="product">
+    <tr>
+      <th> salesman_id</th>
+      <th> first_name</th>
+      <th> last_name</th>
+      <th> email</th>
+      <th> gender</th>
+      <th> mobile</th>
+      <th> status</th>
+      <th> company</th>
+      <th> </th>
+      <th> </th>
+      <th> </th>
+      <th> </th>
+    </tr>
+    <?php
+    foreach ($salesmans as $salesman): ?>
+    <tr>
+      <td><?php echo $salesman['salesman_id'] ?></td>
+      <td><?php echo $salesman['first_name'] ?></td>
+      <td><?php echo $salesman['last_name'] ?></td>
+      <td><?php echo $salesman['email'] ?></td>
+      <td><?php echo $salesman['gender'] ?></td>
+      <td><?php echo $salesman['mobile'] ?></td>
+      <td><?php echo $salesman['status'] ?></td>
+      <td><?php echo $salesman['company'] ?></td>
+      <td><a href="http://localhost/new_project/index.php?a=edit&c=salesman&salesman_id=<?php echo $salesman['salesman_id'] ?>">edit</a></td>
+      <td><a href="http://localhost/new_project/index.php?a=delete&c=salesman&salesman_id=<?php echo $salesman['salesman_id'] ?>">delete<a></td>
+      <td><a href="http://localhost/new_project/index.php?a=grid&c=salesman_address&salesman_id=<?php echo $salesman['salesman_id'] ?>">view address<a></td>
+      <td><a href="http://localhost/new_project/index.php?a=grid&c=salesman_price&salesman_id=<?php echo $salesman['salesman_id'] ?>">prices<a></td>
+    </tr>
+    <?php endforeach; ?>
+  </table>
+</body>
+<?php require_once "View/html/footer.phtml" ?>
+</html>

@@ -1,0 +1,65 @@
+<?php
+$request = $this->getRequest();
+$id=$request->getParam('salesman_id');
+$sql="SELECT * FROM `salesmans` ORDER BY `first_name` ASC";
+$adapter =$this->getAdapter();
+$salesmen = $adapter->fetchAll($sql);
+$sql = "SELECT SP.entity_id, SP.salesman_price, P.sku, P.cost, P.price, P.product_id 
+		FROM `products` P 
+		LEFT JOIN `salesman_price` SP ON P.product_id = SP.product_id AND SP.salesman_id = ".$_GET['salesman_id']."";
+$products = $adapter->fetchAll($sql);
+ ?>
+<!DOCTYPE html>
+<html>
+<head>
+	<link rel="stylesheet" href="Model/Skin/css/style.css">
+	<title></title>
+</head>
+<body>
+	<?php require_once "View/html/header.phtml" ?>
+	<form action="http://localhost/new_project/index.php?a=update&c=salesman_price&salesman_id=<?php echo $id?>" method="POST">
+	<table width="50%">
+		<tr>
+			<td>Salesman :
+				<select id="" class=""  onchange="change(this.value)">
+				<?php foreach ($salesmen as $salesman): ?>
+					<option value="<?php echo $salesman['salesman_id'];?>"<?php if($salesman['salesman_id'] == $id){ echo "selected";}?>><?php echo $salesman['first_name']; ?></option>
+				<?php endforeach; ?>
+				</select>
+			</td>
+			<td><input id="formbutton1" class="formbutton" type="submit" name="update" value="update"></td>
+			<td><input id="formbutton1" class="formbutton"  type="submit" name="delete" value="delete"></td>
+		</tr>
+	</table>
+<table id="product" border="1px" width="100%">
+	<tr>
+		<th>ID</th>
+		<th>SKU</th>
+		<th>COST</th>
+		<th>PRICE</th>
+		<th>S PRICE</th>
+		<th>REMOVE</th>
+	</tr>
+	<?php foreach ($products as $product):?>
+	<tr>
+		<td><?php echo $product['product_id']; ?></td>
+		<td><?php echo $product['sku']; ?></td>
+		<td><?php echo $product['cost']; ?></td>
+		<td><?php echo $product['price']; ?></td>
+		<td><input type="number" name="sprice[<?php echo $product['product_id']?>]" value="<?php echo $product['salesman_price']; ?>"></td>
+		<td><input type="checkbox" name="delete_price[<?php echo $product['entity_id']; ?>]" value="<?php echo $product['entity_id']; ?>"></td>
+	</tr>
+<?php endforeach; ?>
+
+</table>
+</form>
+<?php require_once "View/html/footer.phtml" ?>
+	
+</body>
+
+<script type="text/javascript">
+	function change(value){
+		window.location.assign('http://localhost/new_project/index.php?a=grid&c=salesman_price&salesman_id='+value);
+	}
+</script>
+</html>
