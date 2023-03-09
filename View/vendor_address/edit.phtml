@@ -10,6 +10,9 @@ if(!isset($id))
 $sql ="SELECT * FROM `vendor_address` WHERE `vendor_id`= $id";
 $adapter =$this->getAdapter();
 $address =$adapter->fetchrow($sql);
+if (!$address) {
+throw new Exception("address not found for this vendor.", 1);
+}
  ?>
 <!DOCTYPE html>
 <html>

@@ -7,6 +7,9 @@ throw new Exception("invalid product id.", 1);
 $sql ="SELECT * FROM `customer_address` WHERE `customer_id`= $id";
 $adapter =$this->getAdapter();
 $address =$adapter->fetchrow($sql);
+if (!$address) {
+throw new Exception("address not found for this customer.", 1);
+}
 ?>
 <!DOCTYPE html>
 <html>

@@ -8,14 +8,20 @@ class Controller_Core_Front extends Controller_Core_Action
 	
 	public function init()
 	{
-		$request = new Model_Core_Request();
+		$request = $this->getRequest();
 		$controllerName =$request->getControllerName();
 		$controllerClassName ='Controller_'.ucwords($controllerName, '_');
 		$controllerClassPath = str_replace('_', '/', $controllerName);
 		require_once 'Controller/'.$controllerClassPath.'.php';
 		$action = $request->getActionName().'Action';
 		$Controller = new $controllerClassName();
+		if(!method_exists($Controller, $action))
+		{
+			$Controller->errorAction($action);
+		}
+		
 		$Controller->$action();
 	}
+
 }
 ?>

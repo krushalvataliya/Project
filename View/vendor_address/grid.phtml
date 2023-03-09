@@ -5,7 +5,7 @@ $sql ="SELECT * FROM `vendor_address` WHERE `vendor_id`= $id";
 $adapter =$this->getAdapter();
 $address =$adapter->fetchrow($sql);
 if (!$address) {
-throw new Exception("Error Processing Request", 1);
+throw new Exception("address not found for this vendor.", 1);
 }
 ?>
 <!DOCTYPE html>
