@@ -1,7 +1,5 @@
 <?php
-$sql ="SELECT * FROM `shiping_methods` WHERE 1";
-$adapter =$this->getAdapter();
-$shipping_method =$adapter->fetchAll($sql);
+$shipping_methods = $this->getShippingMethod();
 ?>
 <!DOCTYPE html>
 <html>
@@ -25,7 +23,7 @@ $shipping_method =$adapter->fetchAll($sql);
     <th> </th>
   </tr>
   <tr>
-    <?php foreach ($shipping_method as $shipping_method): ?>
+    <?php foreach ($shipping_methods as $shipping_method): ?>
     <td><?php echo $shipping_method['shiping_method_id'] ?></td>
     <td> <?php echo $shipping_method['name'] ?> </td>
     <td> <?php echo $shipping_method['amount'] ?> </td>

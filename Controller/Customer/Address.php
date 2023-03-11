@@ -7,12 +7,12 @@ class Controller_Customer_Address extends Controller_Core_Action
 {
 	public function gridAction()
 	{
-		require_once 'View/customer_address/grid.phtml';
+		$this->getTemplete('/customer_address/grid.phtml');
 	}
 
 	public function editAction()
 	{
-		require_once 'View/customer_address/edit.phtml';
+		$this->getTemplete('/customer_address/edit.phtml');
 	}
 	
 	public function updateAction()

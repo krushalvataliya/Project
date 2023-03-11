@@ -1,8 +1,7 @@
 <?php
-$adapter = $this->getAdapter();
-$sql ="SELECT * FROM `products` WHERE 1";
-$products =$adapter->fetchAll($sql);
+$products = $this->getProduct();
 ?>
+
 <!DOCTYPE html>
 <html>
 	<head>

@@ -8,12 +8,12 @@ class Controller_Salesman_Address extends Controller_Core_Action
 {
 	public function gridAction()
 	{
-		require_once 'View/salesman_address/grid.phtml';
+		$this->getTemplete('salesman_address/grid.phtml');
 	}
 
 	public function editAction()
 	{
-		require_once 'View/salesman_address/edit.phtml';
+		$this->getTemplete('salesman_address/edit.phtml');
 	}
 	
 	public function updateAction()

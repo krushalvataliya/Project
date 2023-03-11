@@ -6,17 +6,33 @@ require_once 'Controller/Core/Action.php';
  */
 class Controller_Customer extends Controller_Core_Action
 {
+	protected $customers = null;
+
 	public function gridAction()
 	{
-		require_once 'View/customer/grid.phtml';
+		$sql ="SELECT * FROM `customers` WHERE 1";
+		$adapter =$this->getAdapter();
+		$customers =$adapter->fetchall($sql);
+		$this->setCustomer($customers);
+		$this->getTemplete('customer/grid.phtml');
 	}
 	public function addAction()
 	{
-		require_once 'View/customer/add.phtml';
+		$this->getTemplete('customer/add.phtml');
 	}
 	public function editAction()
 	{
-		require_once 'View/customer/edit.phtml';
+		$request = $this->getRequest();
+		$id=$request->getParam('customer_id');
+		if(!isset($id))
+		{
+		throw new Exception("invalid product id.", 1);
+		}
+		$sql ="SELECT * FROM `customers` WHERE `customer_id`= '$id';";
+		$adapter =$this->getAdapter();
+		$customer =$adapter->fetchRow($sql);
+		$this->setCustomer($customer);
+		$this->getTemplete('customer/edit.phtml');
 	}
 	public function insertAction()
 	{
@@ -60,6 +76,17 @@ class Controller_Customer extends Controller_Core_Action
 		$update = $adapter->update($sql);
 		return $this->redirect("http://localhost/new_project/index.php?a=grid&c=customer");
 	}
+    public function getCustomer()
+    {
+        return $this->customers;
+    }
+
+    public function setCustomer($customers)
+    {
+        $this->customers = $customers;
+
+        return $this;
+    }
 }
 
 ?>

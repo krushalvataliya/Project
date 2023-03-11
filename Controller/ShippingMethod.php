@@ -6,17 +6,33 @@ require_once 'Controller/Core/Action.php';
  */
 class Controller_ShippingMethod extends Controller_Core_Action
 {
+	protected $shipping_methods = null;
+
 	public function gridAction()
 	{
-		require_once 'View/shipping_method/grid.phtml';
+		$sql ="SELECT * FROM `shiping_methods` WHERE 1";
+		$adapter =$this->getAdapter();
+		$shipping_methods =$adapter->fetchAll($sql);
+		$this->setShippingMethod($shipping_methods);
+		$this->getTemplete('shipping_method/grid.phtml');
 	}
 	public function addAction()
 	{
-		require_once 'View/shipping_method/add.phtml';
+		$this->getTemplete('shipping_method/add.phtml');
 	}
 	public function editAction()
 	{
-		require_once 'View/shipping_method/edit.phtml';
+		$request = $this->getRequest();
+		$id=$request->getParam('shiping_method_id');
+		if(!isset($id))
+		{
+		  throw new Exception("invalid product id.", 1);
+		}
+		$sql ="SELECT * FROM `shiping_methods` WHERE `shiping_method_id`= '$id';";
+		$adapter =$this->getAdapter();
+		$shiping_method =$adapter->fetchRow($sql);
+		$this->setShippingMethod($shiping_method);
+		$this->getTemplete('shipping_method/edit.phtml');
 	}
 	public function insertAction()
 	{
@@ -48,6 +64,26 @@ class Controller_ShippingMethod extends Controller_Core_Action
 		return $this->redirect("http://localhost/new_project/index.php?a=grid&c=shippingmethod");
 	}
 	
+
+    /**
+     * @return mixed
+     */
+    public function getShippingMethod()
+    {
+        return $this->shipping_methods;
+    }
+
+    /**
+     * @param mixed $shipping_methods
+     *
+     * @return self
+     */
+    public function setShippingMethod($shipping_methods)
+    {
+        $this->shipping_methods = $shipping_methods;
+
+        return $this;
+    }
 }
 
 ?>

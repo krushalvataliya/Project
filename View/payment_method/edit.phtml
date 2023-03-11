@@ -1,14 +1,5 @@
 <?php
-$request = $this->getRequest();
-$id=$request->getParam('payment_method_id');
-if(!isset($id))
-{
-throw new Exception("invalid product id.", 1);
-}
-$sql ="SELECT * FROM `payment_methods` WHERE `payment_method_id`= '$id';";
-$adapter =$this->getAdapter();
-$payment_method =$adapter->fetchRow($sql);
-$status = $payment_method['status'];
+$payment_method = $this->getPaymentMethod();
 ?>
 <!DOCTYPE html>
 <html>

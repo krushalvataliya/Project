@@ -7,11 +7,11 @@ class Controller_Product_Media extends Controller_Core_Action
 {
 	function gridAction()
 	{
-		require_once 'View/product_media/grid.phtml';
+		$this->getTemplete('product_media/grid.phtml');
 	}
 	function addAction()
 	{
-		require_once 'View/product_media/add.phtml';
+		$this->getTemplete('product_media/add.phtml');
 	}
 	function insertAction()
 	{

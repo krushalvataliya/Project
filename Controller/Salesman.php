@@ -5,17 +5,33 @@ require_once 'Controller/Core/Action.php';
  */
 class Controller_Salesman extends Controller_Core_Action
 {
+	protected $salesmen = null;
+
 	public function gridAction()
 	{
-		require_once 'View/salesman/grid.phtml';
+		$sql ="SELECT * FROM `salesmans` WHERE 1";
+		$adapter =$this->getAdapter();
+		$salesmen =$adapter->fetchAll($sql);
+		$this->setSalesmen($salesmen);
+		$this->getTemplete('salesman/grid.phtml');
 	}
 	public function addAction()
 	{
-		require_once 'View/salesman/add.phtml';
+		$this->getTemplete('salesman/add.phtml');
 	}
 	public function editAction()
 	{
-		require_once 'View/salesman/edit.phtml';
+		$request = $this->getRequest();
+		$id=$request->getParam('salesman_id');
+		if(!isset($id))
+		{
+		throw new Exception("invalid product id.", 1);
+		}
+		$sql ="SELECT * FROM `salesmans` WHERE `salesman_id`= '$id';";
+		$adapter =$this->getAdapter();
+		$salesman =$adapter->fetchRow($sql);
+		$this->setSalesmen($salesman);
+		$this->getTemplete('salesman/edit.phtml');
 	}
 	public function insertAction()
 	{
@@ -55,6 +71,26 @@ class Controller_Salesman extends Controller_Core_Action
 		return $this->redirect("http://localhost/new_project/index.php?a=grid&c=salesman");
 	}
 	
+
+    /**
+     * @return mixed
+     */
+    public function getSalesmen()
+    {
+        return $this->salesmen;
+    }
+
+    /**
+     * @param mixed $salesmen
+     *
+     * @return self
+     */
+    public function setSalesmen($salesmen)
+    {
+        $this->salesmen = $salesmen;
+
+        return $this;
+    }
 }
 
 ?>

@@ -1,15 +1,5 @@
 <?php
-$request = $this->getRequest();
-$id=$request->getParam('customer_id');
-if(!isset($id))
-{
-throw new Exception("invalid product id.", 1);
-}
-$sql ="SELECT * FROM `customers` WHERE `customer_id`= '$id';";
-$adapter =$this->getAdapter();
-$customer =$adapter->fetchRow($sql);
-$status = $customer['status'];
-$gender = $customer['gender'];
+$customer = $this->getCustomer();
 ?>
 <!DOCTYPE html>
 <html>

@@ -1,7 +1,5 @@
 <?php
-$sql ="SELECT * FROM `payment_methods` WHERE 1";
-$adapter =$this->getAdapter();
-$payment_methods =$adapter->fetchAll($sql);
+$payment_methods = $this->getPaymentMethod();
 ?>
 <!DOCTYPE html>
 <html>

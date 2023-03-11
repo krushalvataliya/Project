@@ -1,18 +1,6 @@
 <?php
-$request = $this->getRequest();
-$id=$request->getParam('category_id');
-if(!isset($id))
-{
-throw new Exception("invalid product id.", 1);
-}
-$sql ="SELECT *
-FROM `categories`
-WHERE `category_id`= '$id';";
-$sql2 ="SELECT *
-FROM `categories`";
-$adapter =$this->getAdapter();
-$category =$adapter->fetchRow($sql);
-$parent =$adapter->fetchAll($sql2);
+$category = $this->getEditCategory();
+$parent = $this->getCategory();
 ?>
 <!DOCTYPE html>
 <html>

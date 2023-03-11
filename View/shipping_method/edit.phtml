@@ -1,14 +1,5 @@
 <?php 
-$request = $this->getRequest();
-$id=$request->getParam('shiping_method_id');
-if(!isset($id))
-{
-  throw new Exception("invalid product id.", 1);
-}
-$sql ="SELECT * FROM `shiping_methods` WHERE `shiping_method_id`= '$id';";
-$adapter =$this->getAdapter();
-$shiping_method =$adapter->fetchRow($sql);
-$status = $shiping_method['status'];
+$shiping_method = $this->getShippingMethod();
 ?>
 <!DOCTYPE html>
 <html>

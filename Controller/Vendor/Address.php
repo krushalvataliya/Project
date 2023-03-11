@@ -8,12 +8,12 @@ class Controller_Vendor_Address extends Controller_Core_Action
 {
 	public function gridAction()
 	{
-		require_once 'View/vendor_address/grid.phtml';
+		$this->getTemplete('vendor_address/grid.phtml');
 	}
 
 	public function editAction()
 	{
-		require_once 'View/vendor_address/edit.phtml';
+		$this->getTemplete('vendor_address/edit.phtml');
 	}
 	
 	public function updateAction()

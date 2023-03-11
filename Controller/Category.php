@@ -5,17 +5,34 @@ require_once 'Controller/Core/Action.php';
 */
 class Controller_Category extends Controller_Core_Action
 {
+	protected $category = [];
+	protected $editCategory = [];
+
 	public function gridAction()
 	{
-		require_once 'View/category/grid.phtml';
+		$sql ="SELECT * FROM `categories` ORDER BY `parent_id` ASC;";
+		$adapter =$this->getAdapter();
+		$categories =$adapter->fetchAll($sql);
+		$this->setCategory($categories);
+		$this->getTemplete('category/grid.phtml');
 	}
 	public function addAction()
 	{
-		require_once 'View/category/add.phtml';
+		$this->getTemplete('category/add.phtml');
 	}
 	public function editAction()
 	{
-		require_once 'View/category/edit.phtml';
+		$request = $this->getRequest();
+		$id=$request->getParam('category_id');
+		if(!isset($id))
+		{
+		throw new Exception("invalid product id.", 1);
+		}
+		$sql ="SELECT * FROM `categories` WHERE `category_id`= '$id';";
+		$adapter =$this->getAdapter();
+		$category =$adapter->fetchRow($sql);
+		$this->setEditCategory($category);
+		$this->getTemplete('category/edit.phtml');
 	}
 	public function insertAction()
 	{
@@ -59,6 +76,30 @@ class Controller_Category extends Controller_Core_Action
 		return $this->redirect("http://localhost/new_project/index.php?a=grid&c=category");
 	}
 	
+    public function getCategory()
+    {
+        return $this->category;
+    }
+
+    public function setCategory($category)
+    {
+        $this->category = $category;
+
+        return $this;
+    }
+
+    
+    public function getEditCategory()
+    {
+        return $this->editCategory;
+    }
+
+    public function setEditCategory($editCategory)
+    {
+        $this->editCategory = $editCategory;
+
+        return $this;
+    }
 }
 
 ?>

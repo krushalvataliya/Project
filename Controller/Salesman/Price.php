@@ -7,7 +7,7 @@ class Controller_Salesman_price extends Controller_Core_Action
 {
 	public function gridAction()
 	{
-		require_once 'View/Salesman_price/grid.phtml';
+		$this->getTemplete('Salesman_price/grid.phtml');
 	}
 
 	public function updateAction()

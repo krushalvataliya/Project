@@ -1,10 +1,28 @@
 <?php
-require_once 'Controller/Core/Action.php';
+require_once "Model/Core/Request.php";
 /**
  * 
  */
-class Controller_Core_Front extends Controller_Core_Action 
+class Controller_Core_Front
 {
+	protected $request = null;
+
+	public function getRequest()
+	{
+		if($this->request)
+		{
+			return $this->request;
+		}
+		$request = new Model_Core_Request();
+		$this->setRequest($request);
+		return $request;
+	}
+
+    protected function setRequest(Model_Core_Request $request)
+	{
+		$this->request = $request;
+		return $this;
+	}
 	
 	public function init()
 	{
@@ -19,7 +37,7 @@ class Controller_Core_Front extends Controller_Core_Action
 		{
 			$Controller->errorAction($action);
 		}
-		
+
 		$Controller->$action();
 	}
 

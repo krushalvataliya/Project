@@ -1,38 +1,12 @@
 <?php 
-$request = $this->getRequest();
-$id=$request->getParam('vendor_id');
-if(!isset($id))
-{
-  throw new Exception("invalid product id.", 1);
-}
- $sql ="SELECT * 
-        FROM `vendors` 
-        WHERE `vendor_id`= '$id';";
-$adapter =$this->getAdapter();
-$vendor =$adapter->fetchRow($sql);
-
-  $status = $vendor['status'];
-  $gender = $vendor['gender'];
-
-    // echo $customer['product_id'];
- ?>
+$vendor = $this->getVendor();
+?>
 <!DOCTYPE html>
 <html>
 <head>
    	<link rel="stylesheet" href="Model/Skin/css/style.css">
 	<title>vendor</title>
 </head>
-<style type="text/css">
-  .formbutton{
-  height: 48px;
-width: 100px;
-background-color:#04aa6d;
-text-align: center;
-text-decoration-color: white;
-
-margin-top: 4px; 
-}
-</style>
 <?php require_once "View/html/header.phtml" ?>
 <body>
 <div class="flx"><div><h1> edit vendor</h1></div><div><button class="button  "style=" margin-left: 274px;"><a  class="add" href="http://localhost/new_project/Vendor.php?a=grid">

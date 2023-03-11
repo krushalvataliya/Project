@@ -1,8 +1,5 @@
 <?php
-$sql ="SELECT * FROM `categories` ORDER BY `parent_id` ASC;";
-$adapter =$this->getAdapter();
-$categories =$adapter->fetchAll($sql);
-
+$categories  = $this->getCategory();
 ?>
 <!DOCTYPE html>
 <html>

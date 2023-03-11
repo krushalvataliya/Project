@@ -1,7 +1,5 @@
 <?php
-$sql ="SELECT * FROM `salesmans` WHERE 1";
-$adapter =$this->getAdapter();
-$salesmans =$adapter->fetchAll($sql);
+$salesmen = $this->getSalesmen();
 ?>
 <!DOCTYPE html>
 <html>
@@ -30,7 +28,7 @@ $salesmans =$adapter->fetchAll($sql);
       <th> </th>
     </tr>
     <?php
-    foreach ($salesmans as $salesman): ?>
+    foreach ($salesmen as $salesman): ?>
     <tr>
       <td><?php echo $salesman['salesman_id'] ?></td>
       <td><?php echo $salesman['first_name'] ?></td>

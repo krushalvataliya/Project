@@ -5,17 +5,35 @@ require_once 'Controller/Core/Action.php';
  */
 class Controller_Vendor extends Controller_Core_Action
 {
+	protected $vendors = [];
+
 	public function gridAction()
-	{
-		require_once 'View/vendor/grid.phtml';
+	{	
+		$sql ="SELECT * FROM `vendors` WHERE 1";
+		$adapter =$this->getAdapter();
+		$vendors =$adapter->fetchAll($sql);
+		$this->setVendor($vendors);
+		$this->getTemplete('vendor/grid.phtml');
 	}
 	public function addAction()
 	{
-		require_once 'View/vendor/add.phtml';
+		$this->getTemplete('vendor/add.phtml');
 	}
 	public function editAction()
 	{
-		require_once 'View/vendor/edit.phtml';
+		$request = $this->getRequest();
+		$id=$request->getParam('vendor_id');
+		if(!isset($id))
+		{
+		  throw new Exception("invalid product id.", 1);
+		}
+		 $sql ="SELECT * 
+		        FROM `vendors` 
+		        WHERE `vendor_id`= '$id';";
+		$adapter =$this->getAdapter();
+		$vendor =$adapter->fetchRow($sql);
+		$this->setVendor($vendor);
+		$this->getTemplete('vendor/edit.phtml');
 	}
 	public function insertAction()
 	{
@@ -52,6 +70,17 @@ class Controller_Vendor extends Controller_Core_Action
 		return $this->redirect("http://localhost/new_project/index.php?a=grid&c=vendor");
 	}
 	
+    public function getVendor()
+    {
+        return $this->vendors;
+    }
+
+    public function setVendor($vendors)
+    {
+        $this->vendors = $vendors;
+
+        return $this;
+    }
 }
 
 ?>

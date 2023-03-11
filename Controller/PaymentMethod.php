@@ -5,17 +5,36 @@ require_once 'Controller/Core/Action.php';
  */
 class Controller_PaymentMethod extends Controller_Core_Action
 {
+	protected $payment_methods = [];
+
 	public function gridAction()
 	{
-		require_once 'View/payment_method/grid.phtml';
+		$sql ="SELECT * FROM `payment_methods` WHERE 1";
+		$adapter =$this->getAdapter();
+		$payment_methods =$adapter->fetchAll($sql);
+		$this->setPaymentMethod($payment_methods);
+		$this->getTemplete('payment_method/grid.phtml');
 	}
+	
 	public function addAction()
 	{
-		require_once 'View/payment_method/add.phtml';
+		$this->getTemplete('payment_method/add.phtml');
 	}
+
 	public function editAction()
 	{
-		require_once 'View/payment_method/edit.phtml';
+		$request = $this->getRequest();
+		$id=$request->getParam('payment_method_id');
+		if(!isset($id))
+		{
+		throw new Exception("invalid product id.", 1);
+		}
+
+		$sql ="SELECT * FROM `payment_methods` WHERE `payment_method_id`= '$id';";
+		$adapter =$this->getAdapter();
+		$payment_method =$adapter->fetchRow($sql);
+		$this->setPaymentMethod($payment_method);
+		$this->getTemplete('payment_method/edit.phtml');
 	}
 	public function insertAction()
 	{
@@ -46,6 +65,18 @@ class Controller_PaymentMethod extends Controller_Core_Action
 		return $this->redirect("http://localhost/new_project/index.php?a=grid&c=paymentmethod");
 	}
 	
+
+    public function getPaymentMethod()
+    {
+        return $this->payment_methods;
+    }
+
+    public function setPaymentMethod($payment_methods)
+    {
+        $this->payment_methods = $payment_methods;
+
+        return $this;
+    }
 }
 
 ?>

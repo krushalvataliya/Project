@@ -1,4 +1,5 @@
 <?php
+define("DS", DIRECTORY_SEPARATOR);
 require_once 'Controller/Core/Front.php';
 /**
  * 

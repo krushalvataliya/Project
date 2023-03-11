@@ -43,19 +43,24 @@ class Controller_Core_Action
 		return $this;
 	}
 
-	public static function errorAction($action)
+	public function errorAction($action)
 	{
 		throw new Exception("method:{$action} does not exists.", 1);
 		
 	}
 
-	public static function redirect($url)
+	public function redirect($url)
 	{
 		if($url == null){
 			$url = "http://localhost/new_project/index.php?a=grid&c=product";
 		}
 		header("location: {$url}");
 		exit();
+	}
+
+	public function getTemplete($templetePath)
+	{
+		require_once "View".DS.$templetePath;
 	}
 }
 ?>
