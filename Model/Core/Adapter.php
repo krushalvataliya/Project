@@ -5,13 +5,18 @@ class Model_core_Adapter{
 	public $username="root";
 	public $password="";
 	public $dbname ="product_db";
+   public $connect = null;
 
 	public function connect(){
-		$conn = mysqli_connect($this->servername, $this->username, $this->password ,$this->dbname);
-		return $conn;
+      if($this->connect == null)
+      {
+		$this->connect = mysqli_connect($this->servername, $this->username, $this->password ,$this->dbname);
+      }
+
+      return $this->connect;
 	   }  
 
-   function fetchAll($query){
+   public function fetchAll($query){
    	$connect =$this->connect();
    	$result =$connect->query($query);
    	if(!$result){
@@ -20,7 +25,7 @@ class Model_core_Adapter{
    		return $result->fetch_all(MYSQLI_ASSOC);
    }
 
-   function fetchRow($query){
+   public function fetchRow($query){
    	$connect =$this->connect();
    	$result =$connect->query($query);
    	if(!$result){
@@ -29,7 +34,7 @@ class Model_core_Adapter{
    		return $result->fetch_assoc();
    }
    
-   function insert($query){
+   public function insert($query){
    	$connect =$this->connect();
    	$result =$connect->query($query);
    	if(!$result){
@@ -38,7 +43,7 @@ class Model_core_Adapter{
    		return $connect->insert_id;
    }
 
-   function update($query){
+   public function update($query){
    	$connect =$this->connect();
    	$result =$connect->query($query);
    	if(!$result){

@@ -1,17 +1,20 @@
 <?php 
 require_once 'Controller/Core/Action.php';
+require_once 'Model/salesman.php';
+require_once 'Model/salesman_address.php';
 /**
  * 
  */
 class Controller_Salesman extends Controller_Core_Action
 {
 	protected $salesmen = null;
+	protected $modelSalesman = null;
+	protected $modelSalesmanAddress = null;
 
 	public function gridAction()
 	{
-		$sql ="SELECT * FROM `salesmans` WHERE 1";
-		$adapter =$this->getAdapter();
-		$salesmen =$adapter->fetchAll($sql);
+		$modelSalesman =$this->getModelSalesman();
+		$salesmen =$modelSalesman->fetchAll();
 		$this->setSalesmen($salesmen);
 		$this->getTemplete('salesman/grid.phtml');
 	}
@@ -27,9 +30,8 @@ class Controller_Salesman extends Controller_Core_Action
 		{
 		throw new Exception("invalid product id.", 1);
 		}
-		$sql ="SELECT * FROM `salesmans` WHERE `salesman_id`= '$id';";
-		$adapter =$this->getAdapter();
-		$salesman =$adapter->fetchRow($sql);
+		$modelSalesman =$this->getModelSalesman();
+		$salesman =$modelSalesman->fetchRow($id);
 		$this->setSalesmen($salesman);
 		$this->getTemplete('salesman/edit.phtml');
 	}
@@ -38,17 +40,14 @@ class Controller_Salesman extends Controller_Core_Action
 		$request = $this->getRequest();
 		$salesman = $request->getPost('salesman');
 		$address = $request->getPost('salesman_address');
-		
-		$sql ="INSERT INTO `salesmans` (`salesman_id`, `first_name`, `last_name`, `email`, `gender`, `mobile`, `status`, `company`, `created_at`, `updated_at`)VALUES ('$salesman[salesman_id]', '$salesman[first_name]', '$salesman[last_name]', '$salesman[email]', '$salesman[gender]', '$salesman[mobile]', '$salesman[status]', '$salesman[company]', current_timestamp(), NULL);";
-		$adapter =$this->getAdapter();
-		$insert = $adapter->insert($sql);
+		$modelSalesman =$this->getModelSalesman();
+		$insert = $modelSalesman->insert($salesman);
 		if (!$insert) {
 			throw new Exception("Error Processing Request", 1);
 		}
-		$sql2 = "INSERT INTO `salesman_address` (`address`, `city`, `state`, `country`, `zip_code`, `created_at`, `updated_at`, `salesman_id`)
-		 			VALUES ('$address[address]', '$address[city]', '$address[state]', '$address[country]', '$address[zip_code]', current_timestamp(), NULL, '$insert');";
-
-		$insert2=$adapter->insert($sql2);
+		$address['salesman_id'] = $insert; 
+		$modelSalesmanAddress = $this->getModelSalesmanAddress();
+		$insert2=$modelSalesmanAddress->insert($address);
 		return $this->redirect("http://localhost/new_project/index.php?a=grid&c=salesman");
 
 	}
@@ -56,40 +55,47 @@ class Controller_Salesman extends Controller_Core_Action
 	{
 		$request = $this->getRequest();		
 		$id = $request->getParam('salesman_id');	
-		$sql ="DELETE FROM `salesmans` WHERE `salesmans`.`salesman_id` = {$id}";
-		$adapter =$this->getAdapter();
-		$delete = $adapter->delete($sql);
+		$modelSalesman =$this->getModelSalesman();
+		$delete = $modelSalesman->delete($id);
 		return $this->redirect("http://localhost/new_project/index.php?a=grid&c=salesman");
 	}
 	public function updateAction()
 	{
 		$request = $this->getRequest();
 		$salesman = $request->getPost('salesman');
-		$sql ="UPDATE `salesmans` SET `first_name`='$salesman[first_name]',`last_name`='$salesman[last_name]',`email`='$salesman[email]',`gender`='$salesman[gender]',`mobile`='$salesman[mobile]',`status`='$salesman[status]',`company`='$salesman[company]',`updated_at` = current_timestamp() WHERE `salesmans`.`salesman_id` = $salesman[salesman_id] ; ";
-		$adapter =$this->getAdapter();
-		$update = $adapter->update($sql);
+ 			$modelSalesman =$this->getModelSalesman();
+		$update = $modelSalesman->update($salesman, $salesman['salesman_id']);
 		return $this->redirect("http://localhost/new_project/index.php?a=grid&c=salesman");
 	}
 	
-
-    /**
-     * @return mixed
-     */
     public function getSalesmen()
     {
         return $this->salesmen;
     }
 
-    /**
-     * @param mixed $salesmen
-     *
-     * @return self
-     */
     public function setSalesmen($salesmen)
     {
         $this->salesmen = $salesmen;
 
         return $this;
+    }
+
+    public function getModelSalesman()
+    {
+        if(!$this->modelSalesman)
+        {
+        	$this->modelSalesman = new Model_Salesman();
+        }
+        return $this->modelSalesman;
+    }
+
+    public function getModelSalesmanAddress()
+    {
+        if(!$this->modelSalesmanAddress)
+        {
+        	$this->modelSalesmanAddress = new Model_SalesmanAddress();
+        }
+        return $this->modelSalesmanAddress;
     }
 }
 

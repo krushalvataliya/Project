@@ -1,18 +1,20 @@
 <?php 
 require_once 'Controller/Core/Action.php';
-
+require_once 'Model/Customer.php';
+require_once 'Model/customer_address.php';
 /**
  * 
  */
 class Controller_Customer extends Controller_Core_Action
 {
 	protected $customers = null;
+	protected $modelCustomer = null;
+	protected $modelCustomerAddress = null;
 
 	public function gridAction()
 	{
-		$sql ="SELECT * FROM `customers` WHERE 1";
-		$adapter =$this->getAdapter();
-		$customers =$adapter->fetchall($sql);
+		$modelCustomer =$this->getModelCustomer();
+		$customers =$modelCustomer->fetchall();
 		$this->setCustomer($customers);
 		$this->getTemplete('customer/grid.phtml');
 	}
@@ -28,9 +30,8 @@ class Controller_Customer extends Controller_Core_Action
 		{
 		throw new Exception("invalid product id.", 1);
 		}
-		$sql ="SELECT * FROM `customers` WHERE `customer_id`= '$id';";
-		$adapter =$this->getAdapter();
-		$customer =$adapter->fetchRow($sql);
+		$modelCustomer =$this->getModelCustomer();
+		$customer =$modelCustomer->fetchRow($id);
 		$this->setCustomer($customer);
 		$this->getTemplete('customer/edit.phtml');
 	}
@@ -38,42 +39,35 @@ class Controller_Customer extends Controller_Core_Action
 	{
 		$request = $this->getRequest();
 		$customer = $request->getPost('customer');
-		$customer_address = $request->getPost('customer_address');
-		$sql="INSERT INTO `customers` (`customer_id`, `first_name`, `last_name`, `email`, `gender`, `mobile`, `status`, `created_at`, `updated_at`) VALUES ('$customer[customer_id]', '$customer[first_name]', '$customer[last_name]', '$customer[email]', '$customer[gender]', '$customer[mobile]', '$customer[status]', current_timestamp(), NULL);";
-				$adapter =$this->getAdapter();
-		$insert=$adapter->insert($sql);
+		$customerAddress = $request->getPost('customer_address');
+		$modelCustomer =$this->getModelCustomer();
+		$insert=$modelCustomer->insert($customer);
 		if (!$insert) {
-			throw new Exception("Error Processing Request", 1);
+			throw new Exception("data not inserted.", 1);
 		}
-		 $sql2 = "INSERT INTO `customer_address` (`address`, `city`, `state`, `country`, `zip_code`, `created_at`, `updated_at`, `customer_id`)
-		 			VALUES ('$customer_address[address]', '$customer_address[city]', '$customer_address[state]', '$customer_address[country]', '$customer_address[zip_code]', current_timestamp(), NULL, '$insert');";
-		$insert2=$adapter->insert($sql2);
-		return $this->redirect("http://localhost/new_project/index.php?a=grid&c=customer");
+		$customerAddress['customer_id'] = $insert;
+		$modelCustomerAddress = $this->getModelCustomerAddress();
+		$update = $modelCustomerAddress->insert($customerAddress);
 	}
 	public function deleteAction()
 	{
 		$request = $this->getRequest();
+		$id = $request->getParam('customer_id');
 		$sql ="DELETE FROM `customers` WHERE `customers`.`customer_id` = {$request->getParam('customer_id')}";
-		$adapter =$this->getAdapter();
-		$delete = $adapter->delete($sql);
+		$modelCustomer =$this->getModelCustomer();
+		$delete = $modelCustomer->delete($id);
 		return $this->redirect("http://localhost/new_project/index.php?a=grid&c=customer");
 	}
 	public function updateAction()
 	{
 		$request = $this->getRequest();
 		$customer = $request->getPost('customer');
-		$sql ="SELECT * 
-		        FROM `customers`
-		        WHERE `customer_id`= $customer[customer_id];";
-		$adapter =$this->getAdapter();
-		$result=$adapter->fetchRow($sql);
+		$modelCustomer =$this->getModelCustomer();
+		$result=$modelCustomer->fetchRow($customer['customer_id']);
 		if(!$result){
 			throw new Exception("Error Processing Request", 1);
 		}
-		$sql="UPDATE `customers` 
-			SET `first_name` = '$customer[first_name]', `last_name` = '$customer[last_name]', `email` = '$customer[email]', `gender` = '$customer[gender]', `mobile` = '$customer[mobile]', `status` = '$customer[status]', `updated_at` = current_timestamp() 
-			WHERE `customers`.`customer_id` = $customer[customer_id];";
-		$update = $adapter->update($sql);
+		$update = $modelCustomer->update($customer,$customer['customer_id']);
 		return $this->redirect("http://localhost/new_project/index.php?a=grid&c=customer");
 	}
     public function getCustomer()
@@ -86,6 +80,22 @@ class Controller_Customer extends Controller_Core_Action
         $this->customers = $customers;
 
         return $this;
+    }
+
+    public function getModelCustomer()
+    {
+        if (!$this->modelCustomer) {
+    	$this->modelCustomer = new Model_Customer();
+    	}
+        return $this->modelCustomer;
+    }
+
+    public function getModelCustomerAddress()
+    {
+        if (!$this->modelCustomerAddress) {
+    	$this->modelCustomerAddress = new Model_CustomerAddress();
+    	}
+        return $this->modelCustomerAddress;
     }
 }
 

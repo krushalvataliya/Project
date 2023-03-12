@@ -1,5 +1,6 @@
 <?php
 require_once 'Controller/Core/Action.php';
+require_once 'Model/Cetegory.php';
 /**
 *
 */
@@ -7,17 +8,20 @@ class Controller_Category extends Controller_Core_Action
 {
 	protected $category = [];
 	protected $editCategory = [];
-
+	protected $modelCetegory = null;
 	public function gridAction()
 	{
-		$sql ="SELECT * FROM `categories` ORDER BY `parent_id` ASC;";
-		$adapter =$this->getAdapter();
-		$categories =$adapter->fetchAll($sql);
+		$modelCetegory = $this->getModelCetegory();
+		$sql = "SELECT * FROM `categories` ORDER BY `categories`.`parent_id` ASC";
+		$categories = $modelCetegory->fetchAll($sql);
 		$this->setCategory($categories);
 		$this->getTemplete('category/grid.phtml');
 	}
 	public function addAction()
 	{
+		$modelCetegory = $this->getModelCetegory();
+		$categories = $modelCetegory->fetchAll();
+		$this->setCategory($categories);
 		$this->getTemplete('category/add.phtml');
 	}
 	public function editAction()
@@ -28,9 +32,11 @@ class Controller_Category extends Controller_Core_Action
 		{
 		throw new Exception("invalid product id.", 1);
 		}
-		$sql ="SELECT * FROM `categories` WHERE `category_id`= '$id';";
-		$adapter =$this->getAdapter();
-		$category =$adapter->fetchRow($sql);
+
+		$modelCetegory =$this->getModelCetegory();
+		$categories = $modelCetegory->fetchAll();
+		$this->setCategory($categories);
+		$category =$modelCetegory->fetchRow($id);
 		$this->setEditCategory($category);
 		$this->getTemplete('category/edit.phtml');
 	}
@@ -38,41 +44,36 @@ class Controller_Category extends Controller_Core_Action
 	{
 		$request = $this->getRequest();
 		$category = $request->getPost('category');
-		if($category['sub_category'] == 0){
-		$sql = "INSERT INTO `categories` (`parent_id` ,`name`, `status`, `description`, `created_at`, `updated_at`)
-				VALUES (NULL, '$category[name]', '$category[status]', '$category[description]', current_timestamp(), NULL);";}
-				else{$sql = "INSERT INTO `categories` (`parent_id` ,`name`, `status`, `description`, `created_at`, `updated_at`)
-				VALUES ('$category[sub_category]', '$category[name]', '$category[status]', '$category[description]', current_timestamp(), NULL);";}
-		$adapter =$this->getAdapter();
-			$insert=$adapter->insert($sql);
-		var_dump($insert);
+		print_r($category);	
+		if($category["parent_id"] == 'null')
+		{
+			unset($category["parent_id"]);
+		}
+
+		$modelCetegory = $this->getModelCetegory();
+		$insert=$modelCetegory->insert($category);
 		return $this->redirect("http://localhost/new_project/index.php?a=grid&c=category");
 	}
 	public function deleteAction()
 	{
 		$request = $this->getRequest();
-		$sql ="DELETE FROM `categories` WHERE `categories`.`category_id` = {$request->getParam('category_id')}";
-		$adapter =$this->getAdapter();
-		$delete = $adapter->delete($sql);
+		$id = $request->getParam('category_id');
+		$modelCetegory = $this->getModelCetegory();
+		$delete = $modelCetegory->delete($id);
 		return $this->redirect("http://localhost/new_project/index.php?a=grid&c=category");
 	}
 	public function updateAction()		
 	{
 		$request = $this->getRequest();
 		$category = $request->getPost('category');
-		$sql ="SELECT * FROM `categories` WHERE `category_id`= '$category[category_id]';";
-		$adapter =$this->getAdapter();
-			$categoryr =$adapter->fetchRow($sql);
-		if(!$categoryr){
+		$modelCetegory = $this->getModelCetegory();	
+		$categoryResult =$modelCetegory->fetchRow($category['category_id']);
+		if(!$categoryResult)
+		{
 		throw new Exception("Error Processing Request", 1);
 		}
-		if($category['sub_category'] == 0){
-		$sql ="UPDATE `categories` SET `name` = '$category[name]', `status` = '$category[status]', `description` = '$category[description]' ,`updated_at` = current_timestamp()
-				WHERE `categories`.`category_id` = $category[category_id]";}
-		else{
-			$sql ="UPDATE `categories` SET `name` = '$category[name]', `parent_id` = '$category[sub_category]',`status` = '$category[status]', `description` = '$category[description]' ,`updated_at` = current_timestamp()
-				WHERE `categories`.`category_id` = $category[category_id]";}
-		$update = $adapter->update($sql);
+
+		$update = $modelCetegory->update($category, $category['category_id']);
 		return $this->redirect("http://localhost/new_project/index.php?a=grid&c=category");
 	}
 	
@@ -99,6 +100,14 @@ class Controller_Category extends Controller_Core_Action
         $this->editCategory = $editCategory;
 
         return $this;
+    }
+
+    public function getModelCetegory()
+    {
+    	if (!$this->modelCetegory) {
+    	$this->modelCetegory = new Model_Cetegory();
+    	}
+        return $this->modelCetegory;
     }
 }
 

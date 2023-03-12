@@ -1,17 +1,21 @@
 <?php 
 require_once 'Controller/Core/Action.php';
+require_once 'Model/Vendor.php';
+require_once 'Model/Vendor_address.php';
+
 /**
  * 
  */
 class Controller_Vendor extends Controller_Core_Action
 {
 	protected $vendors = [];
-
+	protected $modelVendor = null;
+	protected $modelVendorAddress = null;
 	public function gridAction()
 	{	
 		$sql ="SELECT * FROM `vendors` WHERE 1";
-		$adapter =$this->getAdapter();
-		$vendors =$adapter->fetchAll($sql);
+		$modelVendor =$this->getModelVendor();
+		$vendors =$modelVendor->fetchAll();
 		$this->setVendor($vendors);
 		$this->getTemplete('vendor/grid.phtml');
 	}
@@ -27,11 +31,8 @@ class Controller_Vendor extends Controller_Core_Action
 		{
 		  throw new Exception("invalid product id.", 1);
 		}
-		 $sql ="SELECT * 
-		        FROM `vendors` 
-		        WHERE `vendor_id`= '$id';";
-		$adapter =$this->getAdapter();
-		$vendor =$adapter->fetchRow($sql);
+		$modelVendor =$this->getModelVendor();
+		$vendor =$modelVendor->fetchRow($id);
 		$this->setVendor($vendor);
 		$this->getTemplete('vendor/edit.phtml');
 	}
@@ -39,25 +40,23 @@ class Controller_Vendor extends Controller_Core_Action
 	{
 		$request = $this->getRequest();
 		$vendor = $request->getPost('vendor');
-		$address = $request->getPost('vendor_address');
-		$sql = "INSERT INTO `vendors` (`vendor_id`, `first_name`, `last_name`, `email`, `gender`, `mobile`, `status`, `company`, `created_at`, `updated_at`) 
-				VALUES ('$vendor[vendor_id]', '$vendor[first_name]', '$vendor[last_name]', '$vendor[email]', '$vendor[gender]', '$vendor[mobile]', '$vendor[status]', '$vendor[company]', current_timestamp(), NULL)";
-		$adapter =$this->getAdapter();
-		$insert=$adapter->insert($sql);
+		$vendorAddress = $request->getPost('vendor_address');
+		$modelVendor =$this->getModelVendor();
+		$insert=$modelVendor->insert($vendor);
 		if (!$insert) {
 			throw new Exception("Error Processing Request", 1);
 		}
-		$sql2 = "INSERT INTO `vendor_address` (`address`, `city`, `state`, `country`, `zip_code`, `created_at`, `updated_at`, `vendor_id`)
-		 		VALUES ('$address[address]', '$address[city]', '$address[state]', '$address[country]', '$address[zip_code]', current_timestamp(), NULL, '$insert');";
-		$insert2=$adapter->insert($sql2);
+		$vendorAddress['vendor_id'] = $insert;
+		$modelVendorAddress =$this->getModelVendorAddress();
+		$insert=$modelVendorAddress->insert($vendorAddress);
 		return $this->redirect("http://localhost/new_project/index.php?a=grid&c=vendor");
 	}
 	public function deleteAction()
 	{
 		$request = $this->getRequest();
-		$adapter =$this->getAdapter();
-		$sql ="DELETE FROM `vendors` WHERE `vendors`.`vendor_id` = {$request->getParam('vendor_id')}";
-		$delete = $adapter->delete($sql);
+		$modelVendor =$this->getModelVendor();
+		$id = $request->getParam('vendor_id');
+		$delete = $modelVendor->delete($id);
 		return $this->redirect("http://localhost/new_project/index.php?a=grid&c=vendor");
 	}
 	public function updateAction()
@@ -65,8 +64,8 @@ class Controller_Vendor extends Controller_Core_Action
 		$request = $this->getRequest();
 		$vendor = $request->getPost('vendor');
 			$sql ="UPDATE `vendors` SET `first_name` = '$vendor[first_name]', `last_name` = '$vendor[last_name]', `email` = '$vendor[email]', `gender` = '$vendor[gender]', `mobile` = '$vendor[mobile]', `status` = '$vendor[status]', `company` = '$vendor[company]',`updated_at` = current_timestamp() WHERE `vendors`.`vendor_id` = $vendor[vendor_id];";
-		$adapter =$this->getAdapter();
-		 $update = $adapter->update($sql);
+		$modelVendor =$this->getModelVendor();
+		 $update = $modelVendor->update($vendor, $vendor['vendor_id']);
 		return $this->redirect("http://localhost/new_project/index.php?a=grid&c=vendor");
 	}
 	
@@ -80,6 +79,27 @@ class Controller_Vendor extends Controller_Core_Action
         $this->vendors = $vendors;
 
         return $this;
+    }
+
+   
+
+   
+    public function getModelVendor()
+    {
+        if(!$this->modelVendor)
+        {
+        	$this->modelVendor = new Model_Vendor();
+        }
+        return $this->modelVendor;
+    }
+
+    public function getModelVendorAddress()
+    {
+        if(!$this->modelVendorAddress)
+        {
+        	$this->modelVendorAddress = new Model_VendorAddress();
+        }
+        return $this->modelVendorAddress;
     }
 }
 

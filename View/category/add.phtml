@@ -1,7 +1,5 @@
 <?php
-$sql ="SELECT * FROM `categories`WHERE 1;";
-$adapter =$this->getAdapter();
-$categories =$adapter->fetchAll($sql);
+$categories =$this->getCategory();
 ?>
 <!DOCTYPE html>
 <html>
@@ -18,23 +16,26 @@ $categories =$adapter->fetchAll($sql);
     </a></button></div> <div class=""><form action="http://localhost/new_project/index.php?a=insert&c=category" method="POST"><input id="formbutton1" class="formbutton" type="submit" value="Save"></td></div></div>
     <table id="product">
       <form action="insert_category.php" method="GET">
-        <tr>
+       <!--  <tr>
           <th> category_id</th>
           <td><input type="number" id="category_id" name="category[category_id]"></td>
-        </tr>
+        </tr> -->
         <tr>
           <tr> <th> parent category</th>
-          <td><select name="category[sub_category]"class="custom-select" >
-            <option value="0" >select</option>
+          <td><select name="category[parent_id]"class="custom-select" >
+            <option value="null" >select</option>
             <?php foreach ($categories as $category): ?>
-            <option value="<?php echo $category['category_id'];?>"><?php if ($category['parent_id'] != null) {
+            <option value="<?php echo $category['category_id'];?>">
+              <?php if ($category['parent_id'] != null) {
               foreach ($categories as $main) {
               if ($category['parent_id'] == $main['category_id']) {
               echo $main['name'];
               }
               }
               echo "=>";
-            } echo $category['name'];?></option>
+            } echo $category['name'];?> 
+            
+          </option>
             <?php endforeach; ?>
           </select> </td></tr>
           <th> name</th>
