@@ -11,7 +11,7 @@ class Controller_ShippingMethod extends Controller_Core_Action
 	protected $modelShippingMethod = null;
 
 	public function gridAction()
-	{
+	{	
 		$modelShippingMethod =$this->getModelShippingMethod();
 		$shipping_methods =$modelShippingMethod->fetchAll();
 		$this->setShippingMethod($shipping_methods);

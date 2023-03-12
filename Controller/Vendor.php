@@ -13,7 +13,6 @@ class Controller_Vendor extends Controller_Core_Action
 	protected $modelVendorAddress = null;
 	public function gridAction()
 	{	
-		$sql ="SELECT * FROM `vendors` WHERE 1";
 		$modelVendor =$this->getModelVendor();
 		$vendors =$modelVendor->fetchAll();
 		$this->setVendor($vendors);

@@ -1,18 +1,39 @@
 <?php 
 require_once 'Controller/Core/Action.php';
+require_once 'Model/Vendor_address.php';
 
-/**
- * 
- */
 class Controller_Vendor_Address extends Controller_Core_Action
 {
+	protected $vendorAddress = [];
+	protected $modelVendorAddress = null;
+
 	public function gridAction()
 	{
+		$request = $this->getRequest();
+		$id['vendor_id']=$request->getParam('vendor_id');
+		$modelVendorAddress =$this->getModelVendorAddress();
+		$address =$modelVendorAddress->fetchrow($id);
+		if (!$address) {
+		throw new Exception("address not found for this vendor.", 1);
+		}
+		$this->setVendorAddress($address);
 		$this->getTemplete('vendor_address/grid.phtml');
 	}
 
 	public function editAction()
 	{
+		$request = $this->getRequest();
+		$id['vendor_id']=$request->getParam('vendor_id');
+		if(!isset($id))
+		{
+		  throw new Exception("invalid vendor_id.", 1);
+		}
+		$modelVendorAddress =$this->getModelVendorAddress();
+		$address =$modelVendorAddress->fetchrow($id);
+		if (!$address) {
+		throw new Exception("address not found for this vendor.", 1);
+		}
+		$this->setVendorAddress($address);
 		$this->getTemplete('vendor_address/edit.phtml');
 	}
 	
@@ -21,17 +42,37 @@ class Controller_Vendor_Address extends Controller_Core_Action
 		$request = $this->getRequest();
 		$vendor_address = $request->getPost('address');
 		$sql ="SELECT * FROM `vendor_address` WHERE `vendor_id`= $vendor_address[vendor_id]";
-		$adapter =$this->getAdapter();
-		$result=$adapter->fetchRow($sql);
+		$id['vendor_id']= $vendor_address['vendor_id'];
+		$modelVendorAddress =$this->getModelVendorAddress();
+		$result=$modelVendorAddress->fetchRow($id);
 		if(!$result){
 			throw new Exception("Error Processing Request", 1);
 		}
-		$sql="UPDATE `vendor_address`SET `address` = '$vendor_address[address]', `city` = '$vendor_address[city]', `state` = '$vendor_address[state]', `country` = '$vendor_address[country]',`zip_code` = '$vendor_address[zip_code]',`updated_at` = current_timestamp() WHERE `vendor_address`.`vendor_id` =$vendor_address[vendor_id] ";
-		$update = $adapter->update($sql);
+		$update = $modelVendorAddress->update($vendor_address, $id);
 		return $this->redirect("http://localhost/new_project/index.php?a=grid&c=vendor_address&vendor_id=$vendor_address[vendor_id]");
 
 	}
 
+
+    public function getVendorAddress()
+    {
+        return $this->vendorAddress;
+    }
+
+    public function setVendorAddress($vendorAddress)
+    {
+        $this->vendorAddress = $vendorAddress;
+
+        return $this;
+    }
+    public function getModelVendorAddress()
+    {
+    	if(!$this->modelVendorAddress)
+        {
+        	$this->modelVendorAddress = new Model_VendorAddress();
+        }
+        return $this->modelVendorAddress;
+    }
 }
 
 ?>

@@ -69,18 +69,36 @@ class Model_Core_Table
 
 	public function fetchRow($id, $query = null)
 	{
-		if($query == null)
+		$adapter = $this->getAdapter();
+		if(is_array($id))
+		{
+			$where = [];
+			if(count($id) == 1)
+			{
+			foreach ($id as $key => $value) {
+			$where [] =" `$key` = '{$value}'" ;
+			}
+			$sql ="SELECT * FROM `{$this->tableName}` WHERE ".implode(' ', $where);
+			}
+			else
+			{
+			foreach ($id as $key => $value)
+			{
+				$where [] =" `$key` = '$value'" ;
+			}
+			$sql ="SELECT * FROM `{$this->tableName}` WHERE " .implode('AND', $where) ;
+			}
+		}
+		if($query == null && !is_array($id))
 		{
 		$sql ="SELECT * FROM `{$this->tableName}` WHERE `{$this->primaryKey}`= '$id'";
-		$adapter = $this->getAdapter();
-		$result = $adapter->fetchRow($sql);
 		}
 
-		else
+		if($query != null)
 		{
-			$result = $adapter->fetchRow($query);
+			$sql = $query;
 		}
-
+		$result = $adapter->fetchRow($sql);
 		return $result;
 	}
 
@@ -101,20 +119,35 @@ class Model_Core_Table
 
 	public function update($data,$condition)
 	{
-		$where = [];
-		if(is_array($data))
-		{
-			foreach ($data as $key => $value)
+			foreach($data as $key => $value)
 			{
-				$where [] =" `$key` = '$value'" ;
+				echo $key;
+				$values [] =" `{$key}` = '{$value}'" ;
 			}
+		if(!is_array($condition))
+		{
+			
+		echo $sql = "UPDATE `{$this->tableName}` SET ".implode(',', $values)." WHERE `{$this->primaryKey}`='{$condition}' ";
 		}
-		echo $sql = "UPDATE `{$this->tableName}` SET ".implode(',', $where)." WHERE `{$this->primaryKey}`='{$condition}' ";
+		$where = [];
+		if(is_array($condition))
+		{
+			foreach ($condition as $key => $value) {
+			$where [] =" `$key` = '{$value}'" ;
+			}
+			if(count($condition) == 1)
+			{
+			echo $sql ="UPDATE `{$this->tableName}` SET ".implode(',', $values)." WHERE ".implode(' ', $where) ;
+			}
+			else
+			{
+			echo $sql ="UPDATE `{$this->tableName}` SET ".implode('AND', $values)." WHERE ".implode('AND', $where) ;
+			}
 
-
+		}
 		$adapter = $this->getAdapter();
 		$adapter->update($sql);
-		// return true;
+		return true;
 	}
 
 	public function delete($condition)
