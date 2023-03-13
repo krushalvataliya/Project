@@ -1,14 +1,10 @@
 <?php
 $request = $this->getRequest();
-$id=$request->getParam('salesman_id');
-$sql="SELECT * FROM `salesmans` ORDER BY `first_name` ASC";
-$adapter =$this->getAdapter();
-$salesmen = $adapter->fetchAll($sql);
-$sql = "SELECT SP.entity_id, SP.salesman_price, P.sku, P.cost, P.price, P.product_id 
-		FROM `products` P 
-		LEFT JOIN `salesman_price` SP ON P.product_id = SP.product_id AND SP.salesman_id = ".$_GET['salesman_id']."";
-$products = $adapter->fetchAll($sql);
- ?>
+$id = $request->getParam('salesman_id');
+$products = $this->getSalesmenPrice();
+$salesmen = $this->getSalesmen();
+
+?>
 <!DOCTYPE html>
 <html>
 <head>

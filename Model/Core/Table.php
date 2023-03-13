@@ -55,7 +55,7 @@ class Model_Core_Table
 		$adapter = $this->getAdapter();
 		if($query == null)
 		{
-		$sql ="SELECT * FROM `{$tableName}`";
+		echo $sql ="SELECT * FROM `{$tableName}`";
 		$result = $adapter->fetchAll($sql);
 		}
 

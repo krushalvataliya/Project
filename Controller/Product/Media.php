@@ -1,12 +1,21 @@
 <?php 
 require_once 'Controller/Core/Action.php';
+require_once 'Model/product_media.php';
 /**
  * 
  */
 class Controller_Product_Media extends Controller_Core_Action
 {
+	protected $productMedia = [];
+	protected $modelProductMedia = null;
 	function gridAction()
 	{
+		$request = $this->getRequest();
+		$productId=$request->getParam('product_id');
+		$sql ="SELECT * FROM `media` WHERE `product_id`= $productId ;";
+		$modelProductMedia =$this->getModelProductMedia();
+		$results =$modelProductMedia->fetchAll($sql);
+		$this->setProductMedia($results);
 		$this->getTemplete('product_media/grid.phtml');
 	}
 	function addAction()
@@ -20,19 +29,16 @@ class Controller_Product_Media extends Controller_Core_Action
 		$target_dir = "view/product_media/media/";
 		$file = basename($_FILES["fileToUpload"]["name"]);
 		$fileArray = explode('.', $file);
-		$sql = "INSERT INTO `image` (`img`,`filename`,`product_id`) VALUES ('hh','$_POST[filename]','$_POST[product_id]') ";
-		$adapter =$this->getAdapter();
-		$insert=$adapter->insert($sql);
-		$targetName=$insert.'i.'.$fileArray[1];
+		$media = $request->getPost('media');
+		$targetName=(new \DateTime())->format('dHis').'i.'.$fileArray[1];
 		$target_file = $target_dir .$targetName;
-		echo $target_file;
-		print_r($target_file);
-		var_dump(move_uploaded_file($_FILES["fileToUpload"]["tmp_name"], $target_file));
-		$sql = "UPDATE `image` SET `img`='$targetName' WHERE  `img_id`= '{$insert}'";
-		$update = $adapter->update($sql);
-	return $this->redirect("http://localhost/new_project/index.php?a=grid&c=product_media&product_id={$productId}");
-
+		move_uploaded_file($_FILES["fileToUpload"]["tmp_name"], $target_file);
+		$media['img'] = $targetName;
+		$modelProductMedia =$this->getModelProductMedia();
+		$insert=$modelProductMedia->insert($media);
+		return $this->redirect("http://localhost/new_project/index.php?a=grid&c=product_media&product_id={$productId}");
 	}
+	
 	function updateAction()
 	{
 		$request = $this->getRequest();
@@ -41,27 +47,28 @@ class Controller_Product_Media extends Controller_Core_Action
 			return $this->deleteAction();
 			}
 		$request = $this->getRequest();
-		$productId = $request->getParam('product_id');
+		$productId['product_id'] = $request->getParam('product_id');
 		$gallary_id = $request->getPost('gallary');
 		$thumbnail = $request->getPost('thumbnail');
 		$midium = $request->getPost('midium');
 		$large = $request->getPost('large');
 		$small = $request->getPost('small');
-		$gallary = implode(',', $gallary_id);
-		$adapter =$this->getAdapter();
-		$sql = "UPDATE `image` SET `thumbnail` = 0 ,`base` = 0 , `midium` = 0 , `large` = 0 , `small` = 0,`gallary`= 0 WHERE `product_id`= $productId " ;
-		$result =$adapter->update($sql);
-		$sql = "UPDATE `image` SET `thumbnail` = 1 WHERE `img_id` = $thumbnail ;";
-		$result =$adapter->update($sql);
-		$sql = "UPDATE `image` SET `midium` = 1  WHERE `img_id` = $midium;";
-		$result =$adapter->update($sql);
-		$sql = "UPDATE `image` SET  `large` = 1  WHERE `img_id` = $large;";
-		$result =$adapter->update($sql);
-		$sql = "UPDATE `image` SET `small` = 1 WHERE `img_id` = $small;";
-		$result =$adapter->update($sql);
-		$sql = "UPDATE `image` SET `gallary` = 1 WHERE `img_id` IN ($gallary);";
-		$result =$adapter->update($sql);
-		$this->redirect("http://localhost/new_project/index.php?a=grid&c=product_media&product_id={$productId}");
+		$modelProductMedia =$this->getModelProductMedia();
+		$resetValue = array('thumbnail' => 0, 'base' => 0 ,'midium' => 0 ,'large' => 0, 'small' => 0, 'gallary' => 0);
+		$result =$modelProductMedia->update($resetValue, $productId);
+		$setThumbnail = array('thumbnail' => 1);
+		$result =$modelProductMedia->update($setThumbnail, $thumbnail);
+		$setMidium = array('midium' => 1);
+		$result =$modelProductMedia->update($setMidium, $midium);
+		$setLarge = array('large' => 1);
+		$result =$modelProductMedia->update($setLarge, $large);
+		$setSmall = array('small' => 1);
+		$result =$modelProductMedia->update($setSmall, $small);
+		$setGallary = array('gallary' => 1);
+		foreach ($gallary_id as $key => $value) {
+			$result =$modelProductMedia->update($setGallary, $value);
+		}
+		$this->redirect("http://localhost/new_project/index.php?a=grid&c=product_media&product_id={$productId['product_id']}");
 	}
 	
 	function deleteAction()
@@ -70,14 +77,33 @@ class Controller_Product_Media extends Controller_Core_Action
 		$productId =$request->getParam('product_id');
 		$delete_image_id = $request->getPost('delete_image');
 		if($delete_image_id != null){
-		$deleteImages = implode(',', $delete_image_id);
-		$sql ="DELETE FROM `image` WHERE `image`.`img_id` IN ($deleteImages)";
-		$adapter =$this->getAdapter();
-		$results =$adapter->delete($sql);
+		$modelProductMedia =$this->getModelProductMedia();
+		foreach ($delete_image_id as $key => $value) {
+			$result =$modelProductMedia->delete($value);
+		}
 		}		
 		return $this->redirect("http://localhost/new_project/index.php?a=grid&c=product_media&product_id={$productId}");
 	}
 
+    public function getModelProductMedia()
+    {
+        if(!$this->modelProductMedia)
+        {
+        	$this->modelProductMedia = new Model_ProductMedia();
+        }
+        return $this->modelProductMedia;
+    }
+    public function getProductMedia()
+    {
+        return $this->productMedia;
+    }
+
+    public function setProductMedia($productMedia)
+    {
+        $this->productMedia = $productMedia;
+
+        return $this;
+    }
 }
 
 ?>

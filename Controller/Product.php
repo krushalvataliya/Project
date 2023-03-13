@@ -20,7 +20,7 @@ class Controller_Product extends Controller_Core_Action
 		return $this;
 	}
 	public function gridAction()
-	{	
+	{		
 		$modelProduct = new Model_Product();
 		$products =$modelProduct->fetchAll();
 		if(!$products)
@@ -29,7 +29,8 @@ class Controller_Product extends Controller_Core_Action
 		}
 		
 		$this->setProduct($products);
-		$this->getTemplete('product/grid.phtml');
+		require_once "View/product/grid.phtml";
+		// $this->getTemplete('product/grid.phtml');
 	}
 	public function addAction()
 	{

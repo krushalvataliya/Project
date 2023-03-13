@@ -41,7 +41,6 @@ class Controller_Vendor_Address extends Controller_Core_Action
 	{
 		$request = $this->getRequest();
 		$vendor_address = $request->getPost('address');
-		$sql ="SELECT * FROM `vendor_address` WHERE `vendor_id`= $vendor_address[vendor_id]";
 		$id['vendor_id']= $vendor_address['vendor_id'];
 		$modelVendorAddress =$this->getModelVendorAddress();
 		$result=$modelVendorAddress->fetchRow($id);
@@ -50,7 +49,6 @@ class Controller_Vendor_Address extends Controller_Core_Action
 		}
 		$update = $modelVendorAddress->update($vendor_address, $id);
 		return $this->redirect("http://localhost/new_project/index.php?a=grid&c=vendor_address&vendor_id=$vendor_address[vendor_id]");
-
 	}
 
 
