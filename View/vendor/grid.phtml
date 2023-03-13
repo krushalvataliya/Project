@@ -9,7 +9,7 @@ $vendors = $this->getVendor();
   </head>
   <body>
     <?php require_once "View/html/header.phtml" ?>
-    <div class="flx"><div><h1>vendor</h1></div><div style="margin-left: 635px;margin-top: 15px;"><button class="button " > <a  class="add" href="http://localhost/new_project/index.php?a=add&c=vendor">
+    <div class="flx"><div><h1>vendor</h1></div><div style="margin-left: 635px;margin-top: 15px;"><button class="button " > <a  class="add" href="http://localhost/project-krushal-vataliya/index.php?a=add&c=vendor">
     add vendor
   </a></button></div></div>
   <table id="product">
@@ -37,9 +37,9 @@ $vendors = $this->getVendor();
       <td><?php echo $vendor['mobile'] ?></td>
       <td><?php echo $vendor['status'] ?></td>
       <td><?php echo $vendor['company'] ?></td>
-      <td><a href="http://localhost/new_project/index.php?a=edit&c=vendor&vendor_id=<?php echo $vendor['vendor_id'] ?>">edit</a></td>
-      <td><a href="http://localhost/new_project/index.php?a=delete&c=vendor&vendor_id=<?php echo $vendor['vendor_id'] ?>">delete<a></td>
-      <td><a href="http://localhost/new_project/index.php?a=grid&c=vendor_address&vendor_id=<?php echo $vendor['vendor_id'] ?>">view address<a></td>
+      <td><a href="http://localhost/project-krushal-vataliya/index.php?a=edit&c=vendor&vendor_id=<?php echo $vendor['vendor_id'] ?>">edit</a></td>
+      <td><a href="http://localhost/project-krushal-vataliya/index.php?a=delete&c=vendor&vendor_id=<?php echo $vendor['vendor_id'] ?>">delete<a></td>
+      <td><a href="http://localhost/project-krushal-vataliya/index.php?a=grid&c=vendor_address&vendor_id=<?php echo $vendor['vendor_id'] ?>">view address<a></td>
     </tr>
     <?php endforeach; ?>
   </table>

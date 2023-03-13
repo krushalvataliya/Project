@@ -10,7 +10,12 @@ class Controller_Vendor_Address extends Controller_Core_Action
 	public function gridAction()
 	{
 		$request = $this->getRequest();
-		$id['vendor_id']=$request->getParam('vendor_id');
+		$id['vendor_id']=(int)$request->getParam('vendor_id');
+		if(!$id)
+		{
+			throw new Exception("invalid vendor ID.", 1);
+			
+		}
 		$modelVendorAddress =$this->getModelVendorAddress();
 		$address =$modelVendorAddress->fetchrow($id);
 		if (!$address) {
@@ -23,10 +28,10 @@ class Controller_Vendor_Address extends Controller_Core_Action
 	public function editAction()
 	{
 		$request = $this->getRequest();
-		$id['vendor_id']=$request->getParam('vendor_id');
-		if(!isset($id))
+		$id['vendor_id']=(int)$request->getParam('vendor_id');
+		if(!$id['vendor_id'])
 		{
-		  throw new Exception("invalid vendor_id.", 1);
+		  throw new Exception("invalid vendor ID.", 1);
 		}
 		$modelVendorAddress =$this->getModelVendorAddress();
 		$address =$modelVendorAddress->fetchrow($id);
@@ -45,10 +50,10 @@ class Controller_Vendor_Address extends Controller_Core_Action
 		$modelVendorAddress =$this->getModelVendorAddress();
 		$result=$modelVendorAddress->fetchRow($id);
 		if(!$result){
-			throw new Exception("Error Processing Request", 1);
+			throw new Exception("data not found.", 1);
 		}
 		$update = $modelVendorAddress->update($vendor_address, $id);
-		return $this->redirect("http://localhost/new_project/index.php?a=grid&c=vendor_address&vendor_id=$vendor_address[vendor_id]");
+		return $this->redirect("http://localhost/project-krushal-vataliya/index.php?a=grid&c=vendor_address&vendor_id=$vendor_address[vendor_id]");
 	}
 
 

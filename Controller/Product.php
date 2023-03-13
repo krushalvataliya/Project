@@ -23,14 +23,9 @@ class Controller_Product extends Controller_Core_Action
 	{		
 		$modelProduct = new Model_Product();
 		$products =$modelProduct->fetchAll();
-		if(!$products)
-		{
-			throw new Exception("no data available.", 1);
-		}
-		
 		$this->setProduct($products);
 		require_once "View/product/grid.phtml";
-		// $this->getTemplete('product/grid.phtml');
+		$this->getTemplete('product/grid.phtml');
 	}
 	public function addAction()
 	{
@@ -66,7 +61,7 @@ class Controller_Product extends Controller_Core_Action
 
 		$modelProduct = new Model_Product();
 		$products =$modelProduct->insert($product);
-		return $this->redirect("http://localhost/new_project/index.php?a=grid&c=product");
+		return $this->redirect("http://localhost/project-krushal-vataliya/index.php?a=grid&c=product");
 	}
 
 	public function deleteAction()
@@ -79,7 +74,7 @@ class Controller_Product extends Controller_Core_Action
 		$id = $request->getParam('product_id');
 		$modelProduct = new Model_Product();
 		$products =$modelProduct->delete($id);
-		return $this->redirect("http://localhost/new_project/index.php?a=grid&c=product");
+		return $this->redirect("http://localhost/project-krushal-vataliya/index.php?a=grid&c=product");
 	}
 
 	public function updateAction()
@@ -97,7 +92,7 @@ class Controller_Product extends Controller_Core_Action
 
 		$modelProduct = new Model_Product();
 		$products =$modelProduct->update($product,$product['product_id']);
-		return $this->redirect("http://localhost/new_project/index.php?a=grid&c=product");
+		return $this->redirect("http://localhost/project-krushal-vataliya/index.php?a=grid&c=product");
 	}
 
 }

@@ -24,7 +24,7 @@ class Controller_ShippingMethod extends Controller_Core_Action
 	public function editAction()
 	{
 		$request = $this->getRequest();
-		$id=$request->getParam('shiping_method_id');
+		$id=(int)$request->getParam('shiping_method_id');
 		if(!isset($id))
 		{
 		  throw new Exception("invalid product id.", 1);
@@ -37,27 +37,41 @@ class Controller_ShippingMethod extends Controller_Core_Action
 	public function insertAction()
 	{
 		$request = $this->getRequest();
+		if (!$request->isPost())
+		{
+			throw new Exception("invalid Request.", 1);
+		}
+
 		$shiping_method = $request->getPost('shipping_method');
 		$modelShippingMethod =$this->getModelShippingMethod();
 		$insert=$modelShippingMethod->insert($shiping_method);
-		return $this->redirect("http://localhost/new_project/index.php?a=grid&c=shippingmethod");
+		return $this->redirect("http://localhost/project-krushal-vataliya/index.php?a=grid&c=shippingmethod");
 
 	}
 	public function deleteAction()
 	{
 		$request = $this->getRequest();
-		$id = $request->getParam('shiping_method_id');
+		$id =(int) $request->getParam('shiping_method_id');
+		if(!$id)
+		{
+			throw new Exception("invalid shiping method ID", 1);
+		}
+			
 		$modelShippingMethod =$this->getModelShippingMethod();
 		$delete = $modelShippingMethod->delete($id);
-		return $this->redirect("http://localhost/new_project/index.php?a=grid&c=shippingmethod");
+		return $this->redirect("http://localhost/project-krushal-vataliya/index.php?a=grid&c=shippingmethod");
 	}
 	public function updateAction()
 	{
 		$request = $this->getRequest();
+		if (!$request->isPost())
+		{
+			throw new Exception("invalid Request.", 1);
+		}
 		$shiping_method = $request->getPost('shiping_method');
 		$modelShippingMethod =$this->getModelShippingMethod();
 		$update = $modelShippingMethod->update($shiping_method, $shiping_method['shiping_method_id']);
-		return $this->redirect("http://localhost/new_project/index.php?a=grid&c=shippingmethod");
+		return $this->redirect("http://localhost/project-krushal-vataliya/index.php?a=grid&c=shippingmethod");
 	}
 	
 

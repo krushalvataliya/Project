@@ -13,7 +13,7 @@ class Controller_Salesman_Address extends Controller_Core_Action
 	public function gridAction()
 	{
 		$request = $this->getRequest();
-		$id['salesman_id']=$request->getParam('salesman_id');
+		$id['salesman_id']=(int)$request->getParam('salesman_id');	
 		$modelSalesmanAddress =$this->getModelSalesmanAddress();
 		$address =$modelSalesmanAddress->fetchrow($id);
 		if (!$address) {
@@ -26,10 +26,10 @@ class Controller_Salesman_Address extends Controller_Core_Action
 	public function editAction()
 	{
 		$request = $this->getRequest();
-		$id['salesman_id']=$request->getParam('salesman_id');
-		if(!isset($id))
+		$id['salesman_id']=(int)$request->getParam('salesman_id');
+		if(!$id['salesman_id'])
 		{
-		  throw new Exception("invalid salesman_id.", 1);
+		  throw new Exception("invalid salesman ID.", 1);
 		}
 
 		$modelSalesmanAddress =$this->getModelSalesmanAddress();
@@ -44,11 +44,16 @@ class Controller_Salesman_Address extends Controller_Core_Action
 	public function updateAction()
 	{
 		$request = $this->getRequest();
+		if (!$request->isPost())
+		{
+			throw new Exception("invalid Request.", 1);
+		}
+		
 		$salesman = $request->getPost('address');
 		$id['salesman_id'] = $salesman['salesman_id'];
 		$modelSalesmanAddress =$this->getModelSalesmanAddress();
 		$result = $modelSalesmanAddress->update($salesman, $id);
-		return $this->redirect("http://localhost/new_project/index.php?a=grid&c=salesman_address&salesman_id=$salesman[salesman_id]");
+		return $this->redirect("http://localhost/project-krushal-vataliya/index.php?a=grid&c=salesman_address&salesman_id=$salesman[salesman_id]");
 	}
 	
 

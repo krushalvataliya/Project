@@ -1,4 +1,5 @@
 <?php
+$request = $this->getRequest();
 $results = $this->getProductMedia();
 ?>
 <!DOCTYPE html>
@@ -8,7 +9,7 @@ $results = $this->getProductMedia();
     <title></title>
   </head>
   <body>
-    <div class="flx"><div><h1>image</h1></div><div style="margin-left: 635px;margin-top: 15px;"><button class="button " > <a  class="add" href="http://localhost/new_project/index.php?a=add&c=product_media&product_id=<?php echo $results[0]['product_id']; ?>">Add image</a></button></div></div>
+    <div class="flx"><div><h1>image</h1></div><div style="margin-left: 635px;margin-top: 15px;"><button class="button " > <a  class="add" href="http://localhost/project-krushal-vataliya/index.php?a=add&c=product_media&product_id=<?php echo $request->getParam('product_id'); ?>">Add image</a></button></div></div>
     <table id="product">
       <tr>
         <th> image</th>
@@ -22,7 +23,7 @@ $results = $this->getProductMedia();
         <th> delete</th>
       </tr>
       
-      <form action="http://localhost/new_project/index.php?a=update&c=product_media&product_id=<?php echo $results[0]['product_id']; ?>" method="POST">
+      <form action="http://localhost/project-krushal-vataliya/index.php?a=update&c=product_media&product_id=<?php echo $request->getParam('product_id'); ?>" method="POST">
         <input id="formbutton1" class="formbutton" type="submit" name="button" value="update">
         <input id="formbutton1 deletebtn" class="formbutton "  type="submit" name="button" value="delete">
         <?php foreach ($results as $result): ?>

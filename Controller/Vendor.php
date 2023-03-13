@@ -25,11 +25,12 @@ class Controller_Vendor extends Controller_Core_Action
 	public function editAction()
 	{
 		$request = $this->getRequest();
-		$id=$request->getParam('vendor_id');
+		$id=(int)$request->getParam('vendor_id');
 		if(!isset($id))
 		{
-		  throw new Exception("invalid product id.", 1);
+		  throw new Exception("invalid vendor ID.", 1);
 		}
+		
 		$modelVendor =$this->getModelVendor();
 		$vendor =$modelVendor->fetchRow($id);
 		$this->setVendor($vendor);
@@ -39,6 +40,10 @@ class Controller_Vendor extends Controller_Core_Action
 	{
 		$request = $this->getRequest();
 		$vendor = $request->getPost('vendor');
+		if (!$request->isPost())
+		{
+			throw new Exception("invalid Request.", 1);
+		}
 		$vendorAddress = $request->getPost('vendor_address');
 		$modelVendor =$this->getModelVendor();
 		$insert=$modelVendor->insert($vendor);
@@ -48,24 +53,28 @@ class Controller_Vendor extends Controller_Core_Action
 		$vendorAddress['vendor_id'] = $insert;
 		$modelVendorAddress =$this->getModelVendorAddress();
 		$insert=$modelVendorAddress->insert($vendorAddress);
-		return $this->redirect("http://localhost/new_project/index.php?a=grid&c=vendor");
+		return $this->redirect("http://localhost/project-krushal-vataliya/index.php?a=grid&c=vendor");
 	}
 	public function deleteAction()
 	{
 		$request = $this->getRequest();
 		$modelVendor =$this->getModelVendor();
-		$id = $request->getParam('vendor_id');
+		$id =(int) $request->getParam('vendor_id');
+		if(!$id)
+		{
+			throw new Exception("invalid vendor ID", 1);
+			
+		}
 		$delete = $modelVendor->delete($id);
-		return $this->redirect("http://localhost/new_project/index.php?a=grid&c=vendor");
+		return $this->redirect("http://localhost/project-krushal-vataliya/index.php?a=grid&c=vendor");
 	}
 	public function updateAction()
 	{
 		$request = $this->getRequest();
 		$vendor = $request->getPost('vendor');
-			$sql ="UPDATE `vendors` SET `first_name` = '$vendor[first_name]', `last_name` = '$vendor[last_name]', `email` = '$vendor[email]', `gender` = '$vendor[gender]', `mobile` = '$vendor[mobile]', `status` = '$vendor[status]', `company` = '$vendor[company]',`updated_at` = current_timestamp() WHERE `vendors`.`vendor_id` = $vendor[vendor_id];";
 		$modelVendor =$this->getModelVendor();
 		 $update = $modelVendor->update($vendor, $vendor['vendor_id']);
-		return $this->redirect("http://localhost/new_project/index.php?a=grid&c=vendor");
+		return $this->redirect("http://localhost/project-krushal-vataliya/index.php?a=grid&c=vendor");
 	}
 	
     public function getVendor()

@@ -35,30 +35,41 @@ class Controller_PaymentMethod extends Controller_Core_Action
 		$this->setPaymentMethod($payment_method);
 		$this->getTemplete('payment_method/edit.phtml');
 	}
+
 	public function insertAction()
 	{
 		$request = $this->getRequest();
+		if (!$request->isPost())
+		{
+			throw new Exception("invalid Request.", 1);
+		}
+
 		$payment_method = $request->getPost('payment_method');
 
 		$modelPaymentMethod =$this->getModelPaymentMethod();
 		$insert=$modelPaymentMethod->insert($payment_method);
-		return $this->redirect("http://localhost/new_project/index.php?a=grid&c=paymentmethod");
+		return $this->redirect("http://localhost/project-krushal-vataliya/index.php?a=grid&c=paymentmethod");
 	}
 	public function deleteAction()
 	{
 		$request = $this->getRequest();
-		$id = $request->getParam('payment_method_id');
+		$id = (int) $request->getParam('payment_method_id');
 		$modelPaymentMethod =$this->getModelPaymentMethod();
 		$delete = $modelPaymentMethod->delete($id);
-		return $this->redirect("http://localhost/new_project/index.php?a=grid&c=paymentmethod");
+		return $this->redirect("http://localhost/project-krushal-vataliya/index.php?a=grid&c=paymentmethod");
 	}
 	public function updateAction()
 	{
 		$request = $this->getRequest();
+		if (!$request->isPost())
+		{
+			throw new Exception("invalid Request.", 1);
+		}
+		
 		$payment_method = $request->getPost('payment_method');
 		$modelPaymentMethod =$this->getModelPaymentMethod();
 		$update = $modelPaymentMethod->update($payment_method,$payment_method['payment_method_id']);
-		return $this->redirect("http://localhost/new_project/index.php?a=grid&c=paymentmethod");
+		return $this->redirect("http://localhost/project-krushal-vataliya/index.php?a=grid&c=paymentmethod");
 	}
 
     public function getPaymentMethod()

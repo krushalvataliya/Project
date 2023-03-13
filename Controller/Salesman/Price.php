@@ -13,7 +13,12 @@ class Controller_Salesman_price extends Controller_Core_Action
 	public function gridAction()
 	{
 		$request = $this->getRequest();
-		$id=$request->getParam('salesman_id');
+		$id=(int)$request->getParam('salesman_id');
+		if(!$id)
+		{
+			throw new Exception("invalid salesman ID.", 1);
+		}
+		
 		$sql="SELECT * FROM `salesmen` ORDER BY `first_name` ASC";
 		$modelSalesmanPrice =$this->getModelSalesmanPrice();
 		$salesmen = $modelSalesmanPrice->fetchAll($sql);
@@ -29,8 +34,18 @@ class Controller_Salesman_price extends Controller_Core_Action
 	public function updateAction()
 	{
 		$request = $this->getRequest();
+		if (!$request->isPost())
+		{
+			throw new Exception("invalid Request.", 1);
+		}
+
 		$update_sprice = $request->getPost('sprice');
-		$id =$request->getParam('salesman_id');
+		$id = (int)$request->getParam('salesman_id');
+		if(!$id)
+		{
+			throw new Exception("invalid salesman ID;", 1);
+		}
+
 		$modelSalesmanPrice =$this->getModelSalesmanPrice();
 		$update = $request->getPost('update');
 		if($update = 'update'){
@@ -40,18 +55,17 @@ class Controller_Salesman_price extends Controller_Core_Action
 		if ($result) {
 			$salesmanPrice['salesman_price'] = $value;
 			$condition = array('product_id' => $key, 'salesman_id' => $id);
-		// $updateQuery = 'UPDATE `salesman_price` SET `salesman_price` = '.$value.' WHERE `product_id` = '.$key.' AND `salesman_id` = '.$id.'';
 		$result = $modelSalesmanPrice->update($salesmanPrice, $condition);
 		}else{
 		if($value != null)
 		{
 		$salesmanPrice = array('product_id' => $key, 'salesman_id' => $id, 'salesman_price' => $value);
-		// $insert = 'INSERT INTO `salesman_price`(`product_id`, `salesman_id`, `salesman_price`) VALUES ('.$key.','.$id.','.$value.')';
 		$result = $modelSalesmanPrice->insert($salesmanPrice);
 		}
 		}
 		}
 		}
+
 		$delete = $request->getPost('delete');
 
 		if ($delete = 'delete') {
@@ -59,12 +73,12 @@ class Controller_Salesman_price extends Controller_Core_Action
 		$delete = $request->getPost('delete_price');
 		foreach ($delete as $key => $value) {
 		$delete = "DELETE FROM salesman_price WHERE `salesman_price`.`entity_id` =$key";
-		// $update = 'UPDATE `salesman_price` SET `salesman_price` = '.$value.' WHERE `product_id` = '.$key.'';
 		$result = $modelSalesmanPrice->delete($key);
 		print_r($result);
 		}
 		}
-		return $this->redirect("http://localhost/new_project/index.php?a=grid&c=salesman_price&salesman_id={$id}");
+
+		return $this->redirect("http://localhost/project-krushal-vataliya/index.php?a=grid&c=salesman_price&salesman_id={$id}");
 	}
 
     public function getSalesmenPrice()

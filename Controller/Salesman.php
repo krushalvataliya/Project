@@ -25,7 +25,7 @@ class Controller_Salesman extends Controller_Core_Action
 	public function editAction()
 	{
 		$request = $this->getRequest();
-		$id=$request->getParam('salesman_id');
+		$id=(int)$request->getParam('salesman_id');
 		if(!isset($id))
 		{
 		throw new Exception("invalid product id.", 1);
@@ -38,6 +38,10 @@ class Controller_Salesman extends Controller_Core_Action
 	public function insertAction()
 	{
 		$request = $this->getRequest();
+		if (!$request->isPost())
+		{
+			throw new Exception("invalid Request.", 1);
+		}
 		$salesman = $request->getPost('salesman');
 		$address = $request->getPost('salesman_address');
 		$modelSalesman =$this->getModelSalesman();
@@ -45,27 +49,37 @@ class Controller_Salesman extends Controller_Core_Action
 		if (!$insert) {
 			throw new Exception("Error Processing Request", 1);
 		}
+
 		$address['salesman_id'] = $insert; 
 		$modelSalesmanAddress = $this->getModelSalesmanAddress();
 		$insert2=$modelSalesmanAddress->insert($address);
-		return $this->redirect("http://localhost/new_project/index.php?a=grid&c=salesman");
+		return $this->redirect("http://localhost/project-krushal-vataliya/index.php?a=grid&c=salesman");
 
 	}
 	public function deleteAction()
 	{
 		$request = $this->getRequest();		
-		$id = $request->getParam('salesman_id');	
+		$id =(int)$request->getParam('salesman_id');
+		if(!$id)
+		{
+			throw new Exception("invalid salesman ID.", 1);
+		}	
+
 		$modelSalesman =$this->getModelSalesman();
 		$delete = $modelSalesman->delete($id);
-		return $this->redirect("http://localhost/new_project/index.php?a=grid&c=salesman");
+		return $this->redirect("http://localhost/project-krushal-vataliya/index.php?a=grid&c=salesman");
 	}
 	public function updateAction()
 	{
 		$request = $this->getRequest();
+		if (!$request->isPost())
+		{
+			throw new Exception("invalid Request.", 1);
+		}
 		$salesman = $request->getPost('salesman');
  			$modelSalesman =$this->getModelSalesman();
 		$update = $modelSalesman->update($salesman, $salesman['salesman_id']);
-		return $this->redirect("http://localhost/new_project/index.php?a=grid&c=salesman");
+		return $this->redirect("http://localhost/project-krushal-vataliya/index.php?a=grid&c=salesman");
 	}
 	
     public function getSalesmen()

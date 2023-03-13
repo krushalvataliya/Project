@@ -52,7 +52,7 @@ class Controller_Core_Action
 	public function redirect($url)
 	{
 		if($url == null){
-			$url = "http://localhost/new_project/index.php?a=grid&c=product";
+			$url = "http://localhost/project-krushal-vataliya/index.php?a=grid&c=product";
 		}
 		header("location: {$url}");
 		exit();

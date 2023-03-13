@@ -4,7 +4,7 @@ class Model_core_Adapter{
 	public $servername="localhost";
 	public $username="root";
 	public $password="";
-	public $dbname ="product_db";
+	public $dbname ="project-krushal-vataliya";
    public $connect = null;
 
 	public function connect(){
@@ -12,7 +12,6 @@ class Model_core_Adapter{
       {
 		$this->connect = mysqli_connect($this->servername, $this->username, $this->password ,$this->dbname);
       }
-
       return $this->connect;
 	   }  
 

@@ -11,10 +11,12 @@ class Controller_Product_Media extends Controller_Core_Action
 	function gridAction()
 	{
 		$request = $this->getRequest();
-		$productId=$request->getParam('product_id');
+		$productId=(int)$request->getParam('product_id');
 		$sql ="SELECT * FROM `media` WHERE `product_id`= $productId ;";
 		$modelProductMedia =$this->getModelProductMedia();
 		$results =$modelProductMedia->fetchAll($sql);
+		
+
 		$this->setProductMedia($results);
 		$this->getTemplete('product_media/grid.phtml');
 	}
@@ -25,7 +27,12 @@ class Controller_Product_Media extends Controller_Core_Action
 	function insertAction()
 	{
 		$request = $this->getRequest();
-		$productId = $request->getParam('product_id');
+		$productId =(int) $request->getParam('product_id');
+		if(!isset($productId))
+		{
+			throw new Exception("invalid product ID.", 1);
+			
+		}
 		$target_dir = "view/product_media/media/";
 		$file = basename($_FILES["fileToUpload"]["name"]);
 		$fileArray = explode('.', $file);
@@ -36,23 +43,29 @@ class Controller_Product_Media extends Controller_Core_Action
 		$media['img'] = $targetName;
 		$modelProductMedia =$this->getModelProductMedia();
 		$insert=$modelProductMedia->insert($media);
-		return $this->redirect("http://localhost/new_project/index.php?a=grid&c=product_media&product_id={$productId}");
+		if(!$insert)
+		{
+			throw new Exception("data not inserted.", 1);
+			
+		}
+		return $this->redirect("http://localhost/project-krushal-vataliya/index.php?a=grid&c=product_media&product_id={$productId}");
 	}
 	
 	function updateAction()
 	{
 		$request = $this->getRequest();
 		$button = $request->getPost('button');
-		if($button == 'delete'){
+		if($button == 'delete')
+		{
 			return $this->deleteAction();
-			}
+		}
 		$request = $this->getRequest();
-		$productId['product_id'] = $request->getParam('product_id');
+		$productId['product_id'] =(int)$request->getParam('product_id');
 		$gallary_id = $request->getPost('gallary');
-		$thumbnail = $request->getPost('thumbnail');
-		$midium = $request->getPost('midium');
-		$large = $request->getPost('large');
-		$small = $request->getPost('small');
+		$thumbnail = (int)$request->getPost('thumbnail');
+		$midium = (int)$request->getPost('midium');
+		$large = (int)$request->getPost('large');
+		$small = (int)$request->getPost('small');
 		$modelProductMedia =$this->getModelProductMedia();
 		$resetValue = array('thumbnail' => 0, 'base' => 0 ,'midium' => 0 ,'large' => 0, 'small' => 0, 'gallary' => 0);
 		$result =$modelProductMedia->update($resetValue, $productId);
@@ -65,24 +78,32 @@ class Controller_Product_Media extends Controller_Core_Action
 		$setSmall = array('small' => 1);
 		$result =$modelProductMedia->update($setSmall, $small);
 		$setGallary = array('gallary' => 1);
-		foreach ($gallary_id as $key => $value) {
+		foreach ($gallary_id as $key => $value)
+		{
 			$result =$modelProductMedia->update($setGallary, $value);
 		}
-		$this->redirect("http://localhost/new_project/index.php?a=grid&c=product_media&product_id={$productId['product_id']}");
+		
+		$this->redirect("http://localhost/project-krushal-vataliya/index.php?a=grid&c=product_media&product_id={$productId['product_id']}");
 	}
 	
 	function deleteAction()
 	{	
 		$request = $this->getRequest();
-		$productId =$request->getParam('product_id');
+		$productId =(int)$request->getParam('product_id');
+		if(!$productId)
+		{
+			throw new Exception("invalid product ID.", 1);
+			
+		}
 		$delete_image_id = $request->getPost('delete_image');
-		if($delete_image_id != null){
+		if($delete_image_id != null)
+		{
 		$modelProductMedia =$this->getModelProductMedia();
 		foreach ($delete_image_id as $key => $value) {
 			$result =$modelProductMedia->delete($value);
 		}
 		}		
-		return $this->redirect("http://localhost/new_project/index.php?a=grid&c=product_media&product_id={$productId}");
+		return $this->redirect("http://localhost/project-krushal-vataliya/index.php?a=grid&c=product_media&product_id={$productId}");
 	}
 
     public function getModelProductMedia()

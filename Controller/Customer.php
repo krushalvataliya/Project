@@ -14,7 +14,7 @@ class Controller_Customer extends Controller_Core_Action
 	public function gridAction()
 	{
 		$modelCustomer =$this->getModelCustomer();
-		$customers =$modelCustomer->fetchall();
+		$customers =$modelCustomer->fetchall();	
 		$this->setCustomer($customers);
 		$this->getTemplete('customer/grid.phtml');
 	}
@@ -25,7 +25,7 @@ class Controller_Customer extends Controller_Core_Action
 	public function editAction()
 	{
 		$request = $this->getRequest();
-		$id=$request->getParam('customer_id');
+		$id=(int)$request->getParam('customer_id');
 		if(!isset($id))
 		{
 		throw new Exception("invalid product id.", 1);
@@ -38,6 +38,10 @@ class Controller_Customer extends Controller_Core_Action
 	public function insertAction()
 	{
 		$request = $this->getRequest();
+		if (!$request->isPost())
+		{
+			throw new Exception("invalid Request.", 1);
+		}
 		$customer = $request->getPost('customer');
 		$customerAddress = $request->getPost('customer_address');
 		$modelCustomer =$this->getModelCustomer();
@@ -48,27 +52,38 @@ class Controller_Customer extends Controller_Core_Action
 		$customerAddress['customer_id'] = $insert;
 		$modelCustomerAddress = $this->getModelCustomerAddress();
 		$update = $modelCustomerAddress->insert($customerAddress);
+		return $this->redirect("http://localhost/project-krushal-vataliya/index.php?a=grid&c=customer");
 	}
 	public function deleteAction()
 	{
 		$request = $this->getRequest();
-		$id = $request->getParam('customer_id');
-		$sql ="DELETE FROM `customers` WHERE `customers`.`customer_id` = {$request->getParam('customer_id')}";
+		$id = (int)$request->getParam('customer_id');
+		if(!$id)
+		{
+			throw new Exception("invalid customer ID", 1);
+			
+		}
 		$modelCustomer =$this->getModelCustomer();
 		$delete = $modelCustomer->delete($id);
-		return $this->redirect("http://localhost/new_project/index.php?a=grid&c=customer");
+		return $this->redirect("http://localhost/project-krushal-vataliya/index.php?a=grid&c=customer");
 	}
 	public function updateAction()
 	{
 		$request = $this->getRequest();
+		if (!$request->isPost())
+		{
+			throw new Exception("invalid Request.", 1);
+		}
+
 		$customer = $request->getPost('customer');
 		$modelCustomer =$this->getModelCustomer();
 		$result=$modelCustomer->fetchRow($customer['customer_id']);
 		if(!$result){
 			throw new Exception("Error Processing Request", 1);
 		}
+		
 		$update = $modelCustomer->update($customer,$customer['customer_id']);
-		return $this->redirect("http://localhost/new_project/index.php?a=grid&c=customer");
+		return $this->redirect("http://localhost/project-krushal-vataliya/index.php?a=grid&c=customer");
 	}
     public function getCustomer()
     {

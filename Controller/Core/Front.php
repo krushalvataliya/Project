@@ -28,6 +28,11 @@ class Controller_Core_Front
 	{
 		$request = $this->getRequest();
 		$controllerName =$request->getControllerName();
+		if(!$controllerName)
+		{
+			throw new Exception("Controller does not exists in url.", 1);
+		}
+		
 		$controllerClassName ='Controller_'.ucwords($controllerName, '_');
 		$controllerClassPath = str_replace('_', '/', $controllerName);
 		require_once 'Controller/'.$controllerClassPath.'.php';

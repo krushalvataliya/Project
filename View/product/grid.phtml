@@ -10,7 +10,7 @@ $products = $this->getProduct();
 	</head>
 	<body>
 		<?php require_once "View/html/header.phtml" ?>
-		<div class="flx"><div><h1>product</h1></div><div style="margin-left: 635px;margin-top: 15px;"><button class="button " > <a  class="add" href="http://localhost/new_project/index.php?a=add&c=product">
+		<div class="flx"><div><h1>product</h1></div><div style="margin-left: 635px;margin-top: 15px;"><button class="button " > <a  class="add" href="http://localhost/project-krushal-vataliya/index.php?a=add&c=product">
 		add product
 	</a></button></div></div>
 	<table id="product">
@@ -40,9 +40,9 @@ $products = $this->getProduct();
 			<td><?php echo $product['status'] ?></td>
 			<td><?php echo $product['color'] ?></td>
 			<td><?php echo $product['material'] ?></td>
-			<td><a href="http://localhost/new_project/index.php?a=grid&c=product_media&product_id=<?php echo $product['product_id'] ?>">images</a></td>
-			<td><a href="http://localhost/new_project/index.php?a=edit&c=product&product_id=<?php echo $product['product_id'] ?>">edit</a></td>
-			<td><a href="http://localhost/new_project/index.php?a=delete&c=product&product_id=<?php echo $product['product_id'] ?>">delete<a></td>
+			<td><a href="http://localhost/project-krushal-vataliya/index.php?a=grid&c=product_media&product_id=<?php echo $product['product_id'] ?>">images</a></td>
+			<td><a href="http://localhost/project-krushal-vataliya/index.php?a=edit&c=product&product_id=<?php echo $product['product_id'] ?>">edit</a></td>
+			<td><a href="http://localhost/project-krushal-vataliya/index.php?a=delete&c=product&product_id=<?php echo $product['product_id'] ?>">delete<a></td>
 		</tr>
 		<?php endforeach; ?>
 	</table>

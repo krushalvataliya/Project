@@ -55,7 +55,7 @@ class Model_Core_Table
 		$adapter = $this->getAdapter();
 		if($query == null)
 		{
-		echo $sql ="SELECT * FROM `{$tableName}`";
+		$sql ="SELECT * FROM `{$tableName}`";
 		$result = $adapter->fetchAll($sql);
 		}
 
@@ -109,7 +109,7 @@ class Model_Core_Table
 		$key =  implode('`,`', array_keys($data));
 		$value =  implode('\',\'', $data);
 
-		echo $sqlI = "INSERT INTO `{$this->tableName}` (`{$key}`) VALUES ('{$value}')";
+		$sqlI = "INSERT INTO `{$this->tableName}` (`{$key}`) VALUES ('{$value}')";
 		$adapter = $this->getAdapter();
 		$result = $adapter->insert($sqlI);
 		return $result;
@@ -121,13 +121,11 @@ class Model_Core_Table
 	{
 			foreach($data as $key => $value)
 			{
-				echo $key;
 				$values [] =" `{$key}` = '{$value}'" ;
 			}
 		if(!is_array($condition))
 		{
-			
-		echo $sql = "UPDATE `{$this->tableName}` SET ".implode(',', $values)." WHERE `{$this->primaryKey}`='{$condition}' ";
+		$sql = "UPDATE `{$this->tableName}` SET ".implode(',', $values).", `updated_at` = current_timestamp() WHERE `{$this->primaryKey}`='{$condition}' ";
 		}
 		$where = [];
 		if(is_array($condition))
@@ -137,17 +135,17 @@ class Model_Core_Table
 			}
 			if(count($condition) == 1)
 			{
-			echo $sql ="UPDATE `{$this->tableName}` SET ".implode(',', $values)." WHERE ".implode(' ', $where) ;
+			echo $sql ="UPDATE `{$this->tableName}` SET ".implode(',', $values).", `updated_at` = current_timestamp() WHERE ".implode(' ', $where) ;
 			}
 			else
 			{
-			echo $sql ="UPDATE `{$this->tableName}` SET ".implode('AND', $values)." WHERE ".implode('AND', $where) ;
+			echo $sql ="UPDATE `{$this->tableName}` SET ".implode('AND', $values).", `updated_at` = current_timestamp() WHERE ".implode('AND', $where) ;
 			}
 
 		}
 		$adapter = $this->getAdapter();
-		$adapter->update($sql);
-		return true;
+		$result = $adapter->update($sql);
+		return $result;
 	}
 
 	public function delete($condition)

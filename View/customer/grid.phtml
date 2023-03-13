@@ -9,7 +9,7 @@ $customers = $this->getcustomer();
     </head>
     <body>
         <?php require_once "View/html/header.phtml" ?>
-        <div class="flx"><div><h1>customer</h1></div><div style="margin-left: 635px;margin-top: 15px;"><button class="button " > <a  class="add" href="http://localhost/new_project/index.php?a=add&c=customer">
+        <div class="flx"><div><h1>customer</h1></div><div style="margin-left: 635px;margin-top: 15px;"><button class="button " > <a  class="add" href="http://localhost/project-krushal-vataliya/index.php?a=add&c=customer">
         add customer
     </a></button></div></div>
     <table id="product">
@@ -35,9 +35,9 @@ $customers = $this->getcustomer();
             <td><?php echo $customer['gender'] ?></td>
             <td><?php echo $customer['mobile'] ?></td>
             <td><?php echo $customer['status'] ?></td>
-            <td><a href="http://localhost/new_project/index.php?a=edit&c=customer&customer_id=<?php echo $customer['customer_id'] ?>">edit</a></td>
-            <td><a href="http://localhost/new_project/index.php?a=delete&c=customer&customer_id=<?php echo $customer['customer_id'] ?>">delete<a></td>
-            <td><a href="http://localhost/new_project/index.php?a=grid&c=customer_address&customer_id=<?php echo $customer['customer_id'] ?>">view address<a></td>
+            <td><a href="http://localhost/project-krushal-vataliya/index.php?a=edit&c=customer&customer_id=<?php echo $customer['customer_id'] ?>">edit</a></td>
+            <td><a href="http://localhost/project-krushal-vataliya/index.php?a=delete&c=customer&customer_id=<?php echo $customer['customer_id'] ?>">delete<a></td>
+            <td><a href="http://localhost/project-krushal-vataliya/index.php?a=grid&c=customer_address&customer_id=<?php echo $customer['customer_id'] ?>">view address<a></td>
         </tr>
         <?php endforeach; ?>
         

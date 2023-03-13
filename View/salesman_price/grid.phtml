@@ -13,7 +13,7 @@ $salesmen = $this->getSalesmen();
 </head>
 <body>
 	<?php require_once "View/html/header.phtml" ?>
-	<form action="http://localhost/new_project/index.php?a=update&c=salesman_price&salesman_id=<?php echo $id?>" method="POST">
+	<form action="http://localhost/project-krushal-vataliya/index.php?a=update&c=salesman_price&salesman_id=<?php echo $id?>" method="POST">
 	<table width="50%">
 		<tr>
 			<td>Salesman :
@@ -55,7 +55,7 @@ $salesmen = $this->getSalesmen();
 
 <script type="text/javascript">
 	function change(value){
-		window.location.assign('http://localhost/new_project/index.php?a=grid&c=salesman_price&salesman_id='+value);
+		window.location.assign('http://localhost/project-krushal-vataliya/index.php?a=grid&c=salesman_price&salesman_id='+value);
 	}
 </script>
 </html>

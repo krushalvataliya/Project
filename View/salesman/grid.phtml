@@ -9,7 +9,7 @@ $salesmen = $this->getSalesmen();
   </head>
   <body>
     <?php require_once "View/html/header.phtml" ?>
-    <div class="flx"><div><h1>salesman</h1></div><div style="margin-left: 635px;margin-top: 15px;"><button class="button " > <a  class="add" href="http://localhost/new_project/index.php?a=add&c=salesman">
+    <div class="flx"><div><h1>salesman</h1></div><div style="margin-left: 635px;margin-top: 15px;"><button class="button " > <a  class="add" href="http://localhost/project-krushal-vataliya/index.php?a=add&c=salesman">
     add salesman
   </a></button></div></div>
   <table id="product">
@@ -38,10 +38,10 @@ $salesmen = $this->getSalesmen();
       <td><?php echo $salesman['mobile'] ?></td>
       <td><?php echo $salesman['status'] ?></td>
       <td><?php echo $salesman['company'] ?></td>
-      <td><a href="http://localhost/new_project/index.php?a=edit&c=salesman&salesman_id=<?php echo $salesman['salesman_id'] ?>">edit</a></td>
-      <td><a href="http://localhost/new_project/index.php?a=delete&c=salesman&salesman_id=<?php echo $salesman['salesman_id'] ?>">delete<a></td>
-      <td><a href="http://localhost/new_project/index.php?a=grid&c=salesman_address&salesman_id=<?php echo $salesman['salesman_id'] ?>">view address<a></td>
-      <td><a href="http://localhost/new_project/index.php?a=grid&c=salesman_price&salesman_id=<?php echo $salesman['salesman_id'] ?>">prices<a></td>
+      <td><a href="http://localhost/project-krushal-vataliya/index.php?a=edit&c=salesman&salesman_id=<?php echo $salesman['salesman_id'] ?>">edit</a></td>
+      <td><a href="http://localhost/project-krushal-vataliya/index.php?a=delete&c=salesman&salesman_id=<?php echo $salesman['salesman_id'] ?>">delete<a></td>
+      <td><a href="http://localhost/project-krushal-vataliya/index.php?a=grid&c=salesman_address&salesman_id=<?php echo $salesman['salesman_id'] ?>">view address<a></td>
+      <td><a href="http://localhost/project-krushal-vataliya/index.php?a=grid&c=salesman_price&salesman_id=<?php echo $salesman['salesman_id'] ?>">prices<a></td>
     </tr>
     <?php endforeach; ?>
   </table>

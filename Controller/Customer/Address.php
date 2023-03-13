@@ -12,14 +12,15 @@ class Controller_Customer_Address extends Controller_Core_Action
 	public function gridAction()
 	{
 		$request = $this->getRequest();
-		$customerId=$request->getParam('customer_id');
+		$customerId=(int) $request->getParam('customer_id');
+		if(!isset($customerId))
+		{
+		throw new Exception("invalid customer_id.", 1);
+		}
+
 		$id['customer_id'] = $customerId;
-		print_r($id);
 		$modelCustomerAddress =$this->getModelCustomerAddress();
 		$address =$modelCustomerAddress->fetchRow($id);
-		if (!$address) {
-		throw new Exception("address not found for this customer.", 1);
-		}
 		$this->setCustomerAddress($address);
 		$this->getTemplete('customer_address/grid.phtml');
 	}
@@ -27,25 +28,28 @@ class Controller_Customer_Address extends Controller_Core_Action
 	public function editAction()
 	{
 		$request = $this->getRequest();
-		$customerId=$request->getParam('customer_id');
+		$customerId=(int) $request->getParam('customer_id');
 		if(!isset($customerId)){
-		throw new Exception("invalid product id.", 1);
+		throw new Exception("invalid customer_id.", 1);
 		}
 		$modelCustomerAddress =$this->getModelCustomerAddress();
 		$id['customer_id'] = $customerId;
-		$address =$modelCustomerAddress->fetchrow($id);
-		if (!$address) {
+		$customerAddress =$modelCustomerAddress->fetchrow($id);
+		if (!$customerAddress) {
 		throw new Exception("address not found for this customer.", 1);
 		}
-		$this->setCustomerAddress($address);
+		$this->setCustomerAddress($customerAddress);
 		$this->getTemplete('customer_address/edit.phtml');
 	}
 	
 	public function updateAction()
 	{
 		$request = $this->getRequest();
+		if (!$request->isPost())
+		{
+			throw new Exception("invalid Request.", 1);
+		}
 		$customer_address = $request->getPost('address');
-		$sql ="SELECT * FROM `customer_address` WHERE `customer_id`= $customer_address[customer_id]";
 		$customer_id['customer_id'] = $customer_address['customer_id'];
 		$modelCustomerAddress =$this->getModelCustomerAddress();
 		$result=$modelCustomerAddress->fetchRow($customer_id);
@@ -55,8 +59,7 @@ class Controller_Customer_Address extends Controller_Core_Action
 		$id['customer_id'] = $customer_address['customer_id'];
 				
 		$update = $modelCustomerAddress->update($customer_address, $id);
-		print_r($update);
-		return $this->redirect("http://localhost/new_project/index.php?a=grid&c=customer_address&customer_id=$customer_address[customer_id]");
+		return $this->redirect("http://localhost/project-krushal-vataliya/index.php?a=grid&c=customer_address&customer_id=$customer_address[customer_id]");
 	}
 
 

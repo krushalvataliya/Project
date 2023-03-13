@@ -9,7 +9,7 @@ $payment_methods = $this->getPaymentMethod();
   </head>
   <body>
     <?php require_once "View/html/header.phtml" ?>
-    <div class="flx"><div><h1>payment method</h1></div><div style="margin-left: 635px;margin-top: 15px;"><button class="button " > <a  class="add" href="http://localhost/new_project/index.php?a=add&c=paymentmethod">
+    <div class="flx"><div><h1>payment method</h1></div><div style="margin-left: 635px;margin-top: 15px;"><button class="button " > <a  class="add" href="http://localhost/project-krushal-vataliya/index.php?a=add&c=paymentmethod">
     add payment method
   </a></button></div></div>
   <table id="product">
@@ -27,8 +27,8 @@ $payment_methods = $this->getPaymentMethod();
       <td><?php echo $payment_method['payment_method_id'] ?></td>
       <td> <?php echo $payment_method['name'] ?></td>
       <td> <?php echo $payment_method['status'] ?></td>
-      <td><a href="http://localhost/new_project/index.php?a=edit&c=paymentmethod&payment_method_id=<?php echo $payment_method['payment_method_id'] ?>">edit</a></td>
-      <td><a href="http://localhost/new_project/index.php?a=delete&c=paymentmethod&payment_method_id=<?php echo $payment_method['payment_method_id'] ?>">delete<a></td>
+      <td><a href="http://localhost/project-krushal-vataliya/index.php?a=edit&c=paymentmethod&payment_method_id=<?php echo $payment_method['payment_method_id'] ?>">edit</a></td>
+      <td><a href="http://localhost/project-krushal-vataliya/index.php?a=delete&c=paymentmethod&payment_method_id=<?php echo $payment_method['payment_method_id'] ?>">delete<a></td>
     </tr>
     <?php endforeach; ?>
   </table>
