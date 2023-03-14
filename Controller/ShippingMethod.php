@@ -30,7 +30,8 @@ class Controller_ShippingMethod extends Controller_Core_Action
 		  throw new Exception("invalid product id.", 1);
 		}
 		$modelShippingMethod =$this->getModelShippingMethod();
-		$shiping_method =$modelShippingMethod->fetchRow($id);
+		$sql = "SELECT * FROM `shiping_methods` WHERE `shiping_method_id`= {$id}";
+		$shiping_method =$modelShippingMethod->fetchRow($sql);
 		$this->setShippingMethod($shiping_method);
 		$this->getTemplete('shipping_method/edit.phtml');
 	}

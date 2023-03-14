@@ -20,7 +20,7 @@ class Controller_Product extends Controller_Core_Action
 		return $this;
 	}
 	public function gridAction()
-	{		
+	{	
 		$modelProduct = new Model_Product();
 		$products =$modelProduct->fetchAll();
 		$this->setProduct($products);
@@ -41,7 +41,8 @@ class Controller_Product extends Controller_Core_Action
 		throw new Exception("invalid product id.", 1);
 		}
 		$modelProduct = new Model_Product();
-		$product =$modelProduct->fetchRow($id);
+		$sql = "SELECT * FROM `products` WHERE `product_id`= {$id}";
+		$product =$modelProduct->fetchRow($sql);
 		$this->setProduct($product);
 		$this->getTemplete('product/edit.phtml');
 	}

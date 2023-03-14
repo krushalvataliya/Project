@@ -5,7 +5,7 @@ require_once 'Model/Core/Adapter.php';
  */
 class Model_Core_Table
 {
-	
+	protected $data = [];
 	public $tableName = null;
 	public $primaryKey = null;
 	public $adapter = null;
@@ -51,55 +51,17 @@ class Model_Core_Table
 
     public function fetchAll($query = null)
 	{
-		$tableName = $this->getTableName();
-		$adapter = $this->getAdapter();
 		if($query == null)
 		{
-		$sql ="SELECT * FROM `{$tableName}`";
-		$result = $adapter->fetchAll($sql);
+		$query ="SELECT * FROM `{$this->getTableName()}`";
 		}
 
-		else
-		{
-			$result = $adapter->fetchAll($query);
-		}
-		
-		return $result;
+		return $this->getAdapter()->fetchAll($query);
 	}
 
-	public function fetchRow($id, $query = null)
+	public function fetchRow($query)
 	{
-		$adapter = $this->getAdapter();
-		if(is_array($id))
-		{
-			$where = [];
-			if(count($id) == 1)
-			{
-			foreach ($id as $key => $value) {
-			$where [] =" `$key` = '{$value}'" ;
-			}
-			$sql ="SELECT * FROM `{$this->tableName}` WHERE ".implode(' ', $where);
-			}
-			else
-			{
-			foreach ($id as $key => $value)
-			{
-				$where [] =" `$key` = '$value'" ;
-			}
-			$sql ="SELECT * FROM `{$this->tableName}` WHERE " .implode('AND', $where) ;
-			}
-		}
-		if($query == null && !is_array($id))
-		{
-		$sql ="SELECT * FROM `{$this->tableName}` WHERE `{$this->primaryKey}`= '$id'";
-		}
-
-		if($query != null)
-		{
-			$sql = $query;
-		}
-		$result = $adapter->fetchRow($sql);
-		return $result;
+		return $this->getAdapter()->fetchRow($query);
 	}
 
 	public function insert($data)
@@ -127,20 +89,13 @@ class Model_Core_Table
 		{
 		$sql = "UPDATE `{$this->tableName}` SET ".implode(',', $values).", `updated_at` = current_timestamp() WHERE `{$this->primaryKey}`='{$condition}' ";
 		}
-		$where = [];
+		$and = [];
 		if(is_array($condition))
 		{
 			foreach ($condition as $key => $value) {
-			$where [] =" `$key` = '{$value}'" ;
+			$and [] =" `{$key}` = '{$value}'" ;
 			}
-			if(count($condition) == 1)
-			{
-			echo $sql ="UPDATE `{$this->tableName}` SET ".implode(',', $values).", `updated_at` = current_timestamp() WHERE ".implode(' ', $where) ;
-			}
-			else
-			{
-			echo $sql ="UPDATE `{$this->tableName}` SET ".implode('AND', $values).", `updated_at` = current_timestamp() WHERE ".implode('AND', $where) ;
-			}
+			$sql ="UPDATE `{$this->tableName}` SET ".implode('AND', $values).", `updated_at` = current_timestamp() WHERE ".implode('AND', $and) ;
 
 		}
 		$adapter = $this->getAdapter();
@@ -152,9 +107,36 @@ class Model_Core_Table
 	{
 		$sql = "DELETE FROM `{$this->tableName}` WHERE `{$this->tableName}`.`{$this->primaryKey}` = '{$condition}'  ";
 		$adapter = $this->getAdapter();
-		$adapter->delete($sql);
+		$result = $adapter->delete($sql);
+		return $result;
 	}
-	
+
+    public function getData($key = null)
+    {
+    	if(!$key)
+    	{
+        return $this->data;
+    	}
+    	if (array_key_exists($key, $this->data)) {
+        return $this->data['{$key}'];
+    	}
+    	return null;
+    }
+
+    public function setData(array $data)
+    {
+        $this->data = $data;
+
+        return $this;
+    }
+    public function removeData($key)
+    {
+    	if (array_key_exists($key, $this->data))
+    	{
+    		unset($this->data[$key]);
+    	}
+
+    }
 }
  
 ?>

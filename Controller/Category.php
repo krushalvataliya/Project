@@ -45,7 +45,8 @@ class Controller_Category extends Controller_Core_Action
 			throw new Exception("data not found.", 1);
 		}
 		$this->setCategory($categories);
-		$category =$modelCetegory->fetchRow($id);
+		$sql = "SELECT * FROM `categories` WHERE `category_id`= {$id}";
+		$category =$modelCetegory->fetchRow($sql);
 		if(!$category)
 		{
 			throw new Exception("data not found.", 1);
@@ -90,8 +91,9 @@ class Controller_Category extends Controller_Core_Action
 	{
 		$request = $this->getRequest();
 		$category = $request->getPost('category');
-		$modelCetegory = $this->getModelCetegory();	
-		$categoryResult =$modelCetegory->fetchRow($category['category_id']);
+		$modelCetegory = $this->getModelCetegory();
+		$sql = "SELECT * FROM `categories` WHERE `category_id`= {$category['category_id']}";	
+		$categoryResult =$modelCetegory->fetchRow($sql);
 		if(!$categoryResult)
 		{
 		throw new Exception("Error Processing Request", 1);

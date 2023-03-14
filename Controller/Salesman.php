@@ -31,7 +31,8 @@ class Controller_Salesman extends Controller_Core_Action
 		throw new Exception("invalid product id.", 1);
 		}
 		$modelSalesman =$this->getModelSalesman();
-		$salesman =$modelSalesman->fetchRow($id);
+		$sql = "SELECT * FROM `salesmen` WHERE `salesman_id`= {$id}";
+		$salesman =$modelSalesman->fetchRow($sql);
 		$this->setSalesmen($salesman);
 		$this->getTemplete('salesman/edit.phtml');
 	}

@@ -31,7 +31,8 @@ class Controller_PaymentMethod extends Controller_Core_Action
 		}
 
 		$modelPaymentMethod =$this->getModelPaymentMethod();
-		$payment_method =$modelPaymentMethod->fetchRow($id);
+		$sql = "SELECT * FROM `payment_methods` WHERE `payment_method_id`= {$id}";
+		$payment_method =$modelPaymentMethod->fetchRow($sql);
 		$this->setPaymentMethod($payment_method);
 		$this->getTemplete('payment_method/edit.phtml');
 	}

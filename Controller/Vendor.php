@@ -32,7 +32,8 @@ class Controller_Vendor extends Controller_Core_Action
 		}
 		
 		$modelVendor =$this->getModelVendor();
-		$vendor =$modelVendor->fetchRow($id);
+		$sql = "SELECT * FROM `vendors` WHERE `vendor_id`= {$id}";
+		$vendor =$modelVendor->fetchRow($sql);
 		$this->setVendor($vendor);
 		$this->getTemplete('vendor/edit.phtml');
 	}

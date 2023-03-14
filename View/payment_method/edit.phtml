@@ -14,7 +14,7 @@ $payment_method = $this->getPaymentMethod();
     </a></button></div> <div class=""><form action="http://localhost/project-krushal-vataliya/index.php?a=update&c=paymentmethod" method="POST"><input id="formbutton1" class="formbutton" type="submit" value="Save"></td></div></div>
     <table id="product">
       <form action="update_payment_method.php" method="GET">
-        <tr>
+        <tr hidden>
           <th>payment_method_id</th>
           <td><input type="text" id="name" name="payment_method[payment_method_id]" value="<?php echo $payment_method['payment_method_id']?>"></td>
         </tr>

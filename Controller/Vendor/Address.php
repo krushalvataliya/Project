@@ -10,14 +10,15 @@ class Controller_Vendor_Address extends Controller_Core_Action
 	public function gridAction()
 	{
 		$request = $this->getRequest();
-		$id['vendor_id']=(int)$request->getParam('vendor_id');
+		$id=(int)$request->getParam('vendor_id');
 		if(!$id)
 		{
 			throw new Exception("invalid vendor ID.", 1);
 			
 		}
 		$modelVendorAddress =$this->getModelVendorAddress();
-		$address =$modelVendorAddress->fetchrow($id);
+		$sql = "SELECT * FROM `vendor_address` WHERE `vendor_id`= {$id}";
+		$address =$modelVendorAddress->fetchRow($sql);
 		if (!$address) {
 		throw new Exception("address not found for this vendor.", 1);
 		}
@@ -28,13 +29,14 @@ class Controller_Vendor_Address extends Controller_Core_Action
 	public function editAction()
 	{
 		$request = $this->getRequest();
-		$id['vendor_id']=(int)$request->getParam('vendor_id');
-		if(!$id['vendor_id'])
+		$id=(int)$request->getParam('vendor_id');
+		if(!$id)
 		{
 		  throw new Exception("invalid vendor ID.", 1);
 		}
 		$modelVendorAddress =$this->getModelVendorAddress();
-		$address =$modelVendorAddress->fetchrow($id);
+		$sql = "SELECT * FROM `vendor_address` WHERE `vendor_id`= {$id}";
+		$address =$modelVendorAddress->fetchrow($sql);
 		if (!$address) {
 		throw new Exception("address not found for this vendor.", 1);
 		}
@@ -48,7 +50,8 @@ class Controller_Vendor_Address extends Controller_Core_Action
 		$vendor_address = $request->getPost('address');
 		$id['vendor_id']= $vendor_address['vendor_id'];
 		$modelVendorAddress =$this->getModelVendorAddress();
-		$result=$modelVendorAddress->fetchRow($id);
+		$sql = "SELECT * FROM `vendor_address` WHERE `vendor_id`= {$id['vendor_id']}";
+		$result=$modelVendorAddress->fetchRow($sql);
 		if(!$result){
 			throw new Exception("data not found.", 1);
 		}

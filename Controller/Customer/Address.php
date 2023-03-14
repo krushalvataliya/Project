@@ -17,10 +17,9 @@ class Controller_Customer_Address extends Controller_Core_Action
 		{
 		throw new Exception("invalid customer_id.", 1);
 		}
-
-		$id['customer_id'] = $customerId;
 		$modelCustomerAddress =$this->getModelCustomerAddress();
-		$address =$modelCustomerAddress->fetchRow($id);
+		$sql = "SELECT * FROM `customer_address` WHERE `customer_id` = {$customerId}";
+		$address =$modelCustomerAddress->fetchRow($sql);
 		$this->setCustomerAddress($address);
 		$this->getTemplete('customer_address/grid.phtml');
 	}
@@ -33,8 +32,8 @@ class Controller_Customer_Address extends Controller_Core_Action
 		throw new Exception("invalid customer_id.", 1);
 		}
 		$modelCustomerAddress =$this->getModelCustomerAddress();
-		$id['customer_id'] = $customerId;
-		$customerAddress =$modelCustomerAddress->fetchrow($id);
+		$sql = "SELECT * FROM `customer_address` WHERE `customer_id` = {$customerId}";
+		$customerAddress =$modelCustomerAddress->fetchrow($sql);
 		if (!$customerAddress) {
 		throw new Exception("address not found for this customer.", 1);
 		}
@@ -50,14 +49,14 @@ class Controller_Customer_Address extends Controller_Core_Action
 			throw new Exception("invalid Request.", 1);
 		}
 		$customer_address = $request->getPost('address');
-		$customer_id['customer_id'] = $customer_address['customer_id'];
+		$customerId = $customer_address['customer_id'];
 		$modelCustomerAddress =$this->getModelCustomerAddress();
-		$result=$modelCustomerAddress->fetchRow($customer_id);
+		$sql = "SELECT * FROM `customer_address` WHERE `customer_id` = {$customerId}";
+		$result=$modelCustomerAddress->fetchRow($sql);
 		if(!$result){
 			throw new Exception("Error Processing Request", 1);
 		}
 		$id['customer_id'] = $customer_address['customer_id'];
-				
 		$update = $modelCustomerAddress->update($customer_address, $id);
 		return $this->redirect("http://localhost/project-krushal-vataliya/index.php?a=grid&c=customer_address&customer_id=$customer_address[customer_id]");
 	}

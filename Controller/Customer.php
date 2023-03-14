@@ -31,7 +31,8 @@ class Controller_Customer extends Controller_Core_Action
 		throw new Exception("invalid product id.", 1);
 		}
 		$modelCustomer =$this->getModelCustomer();
-		$customer =$modelCustomer->fetchRow($id);
+		$sql = "SELECT * FROM `customers` WHERE `customer_id`= {$id}";
+		$customer =$modelCustomer->fetchRow($sql);
 		$this->setCustomer($customer);
 		$this->getTemplete('customer/edit.phtml');
 	}
@@ -77,7 +78,8 @@ class Controller_Customer extends Controller_Core_Action
 
 		$customer = $request->getPost('customer');
 		$modelCustomer =$this->getModelCustomer();
-		$result=$modelCustomer->fetchRow($customer['customer_id']);
+		$sql = "SELECT * FROM `customers` WHERE `customer_id`= {$customer['customer_id']}";
+		$result=$modelCustomer->fetchRow($sql);
 		if(!$result){
 			throw new Exception("Error Processing Request", 1);
 		}
